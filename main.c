@@ -1,10 +1,11 @@
-
 #include <stdio.h>
 #include <stdarg.h>
 	
 int main()
 {
-	printf("shit is being printed");	
+	int i;
+	i=0;
+	printf("%d - shit is being printed", i);	
 	return 0;
 }
 
