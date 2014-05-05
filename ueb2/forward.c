@@ -34,11 +34,12 @@ void mvm(double* a, int rows, int cols, double* x, double* y){
 		temp = 0.0;
 		for(c = 0; c < cols; c++)
 		{
-			temp += get_entry(a, rows, r, c) * get_entry(x, rows, c, 0);
+			temp += get_entry(a, rows, r, c) * x[c];
 		}
-		set_entry(y, rows, r, 0, temp);
+		y[r] = temp;
 	}
 }
+
 
 
 /* Loest ein lineares Gleichungssystem durch Vorwaertseinsetzen */
