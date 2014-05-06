@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0pt
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 2}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T2. LR-Zerlegung an einem Beispiel}
+\begin{itemize}
+\item[a)]
+
+\begin{align}
+\begin{array}{cccc|cccc|}
+\cline{5-8}
+ &  &  &         & 2  & -1 & -3 & 3   \\
+ &  &  &         & 0  &  2 &  3 & -5  \\ 
+ &  &  &         & 0  &  0 &  2 &  7  \\
+ &  &  &         & 0  &  0 &  0 & -46 \\ \hline
+\multicolumn{1}{|c}  1 & 0 & 0 & 0     & 2  & -1 & -3 & 3 \\
+\multicolumn{1}{|c}  2 & 1 & 0 & 0    & 4  & 0 & -3 & 1   \\
+\multicolumn{1}{|c}  3 & 2 & 1 & 0    & 6  & 1 & -1 & 6   \\
+\multicolumn{1}{|c} -1 & -3 & 5 & 1  & -2  & -5 & 4 & 1   \\ \hline
+\end{array}
+\end{align}
+
+$r_{1j} = a_{1j}, \quad \forall j\in[1,4]$
+\begin{align}
+1 \cdot r_{11}  &\beequal 2 \rightarrow r_{11}=2  \\ 
+l_{21} r_{11}  &\beequal 4  \rightarrow l_{21}=2  \\
+l_{31} r_{11}  &\beequal 6  \rightarrow l_{31}=3  \\
+l_{41} r_{11}  &\beequal -2 \rightarrow l_{41}=-1 \\
+2 \cdot -1 + 1 \cdot r_{22} &\beequal 0 \rightarrow r_{22} = 2 \\
+2 \cdot -3 + 1 \cdot r_{23} &\beequal -3 \rightarrow r_{23} = 3 \\
+2 \cdot 3  + 1 \cdot r_{24} &\beequal 1  \rightarrow r_{24} = -5 \\
+3 \cdot -1 + l_{32} \cdot 2 &\beequal 1  \rightarrow l_{32} = 2 \\
+-1 \cdot -1 + l_{42} \cdot 2 &\beequal -5 \rightarrow l_{42} = -3 \\
+3 \cdot -3 + 2 \cdot 3 + 1 \cdot r_{33} &\beequal -1 \rightarrow r_{33} = 2 \\
+3 \cdot 3 + 2 \cdot -5 + 1 \cdot r_{34} &\beequal 5 \rightarrow r_{34} = 7 \\
+-1 \cdot -3 + -3 \cdot 3 + l_{43} \cdot 2 &\beequal 4 \rightarrow l_{43} = 5 \\
+-1 \cdot 3 + -3 \cdot -5 + 5 \cdot 7 + 1 \cdot r_{44} &\beequal 1 \rightarrow r_{44}=-46
+\end{align}
+
+
+\item[b)]
+Gesucht wird $x$ in $Ax=b$, f\u r
+\begin{equation}
+b = 
+\begin{bmatrix}
+1 \\ -8 \\ -16 \\ -12
+\end{bmatrix}
+\end{equation}
+
+
+\textbf{Vorw\a rtseinsetzen}
+Es gilt:
+\begin{equation}
+Ly=b
+\end{equation}
+In Matrixschreibweise:
+\begin{equation}
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+2 & 1 & 0 & 0 \\
+3 & 2 & 1 & 0 \\
+-1& -3& 5 & 1
+\end{bmatrix}
+\begin{bmatrix}
+y_1 \\ y_2 \\ y_3 \\ y_4
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\ -8 \\ -16 \\ -12
+\end{bmatrix}
+\end{equation}
+
+Forw\a rtseinsetzen ergibt folgende Berechnungen:
+\begin{align}
+1 \cdot y_1 = 1   &\rightarrow y_1 = 1 \\
+2 + y_2 = -8      &\rightarrow y_2=-10 \\
+3-20+y_3 =-16     &\rightarrow y_3 = 1 \\
+-1+30+5+y_4 = -12 &\rightarrow y_4 = -46 \\
+\end{align}
+ 
+Durch R\u ckw\a rtseinsetzen kann $x$ \u ber die Beziehung $y=Rx$ berechnet werden:
+\begin{equation}
+\begin{bmatrix}
+2 & -1 & -3 & 3 \\
+0 & 2 & 3 & -5 \\
+0 & 0 & 2 & 7 \\
+0 & 0 & 0 & -46
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2 \\ x_3 \\ x_4
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\ -10 \\ 1 \\ -46
+\end{bmatrix}
+\end{equation}
+R\u ckw\a rtseinsetzen ergibt folgende Berechnungen:
+\begin{align}
+1 \cdot x_4 = 1   &\rightarrow x_4 = 1 \\
+2x_3 + 7 = -1      &\rightarrow x_3=-3 \\
+2x_2-9-5 =-10     &\rightarrow x_2 = 2 \\
+2x_1 -2 + 9 +3 = 1 &\rightarrow x_1 = -4.5
+\end{align} 
+\end{itemize}
+
+\section*{T3. Hauptuntermatrizen und LR-Zerlegung}
+Gegeben sei eine Matrix $\mbb{A}\in \mathbb{R}^{n \times n}$. Die Hauptuntermatrix $H_m$ ist regul\a r $\forall m \in \{1,...,n\}$. Zeige, dass $\mbb{A}$ eine LR-Zerlegung besitzt.\\
+
+\textbf{Induktionsanfang:} $n = 1$ \\
+Es folgt zwangsweise $l_{11} = 1$ und $r_{11} = a_{11}$.\\
+
+\textbf{Induktionsvoraussetzung:} \\
+Die Behauptung gilt f\u r alle Matrizen $\mathbb{R}^{n-1 \times n-1}$\\
+
+\textbf{Induktionsschritt:} $n > 1$ \\
+Es gilt aus der Bedigung dass alle $H_m$ regul\a r sind. $\mbb{A}$ wird in geeignete Bl\o cke zerlegt:
+\begin{equation}
+\mbb{A}=
+\left(
+\begin{array}{ccc|c}
+a_{1,1} & \cdots & a_{1,n-1} 	 & a_{1,n} \\
+\vdots  & \ddots & \vdots    	 & \vdots  \\
+a_{n-1,1} & \cdots & a_{n-1,n-1} & a_{n-1,n} \\\hline
+a_{n,1} & \cdots & a_{n,n-1} 	 & a_{n,n} 
+\end{array}
+\right)
+\end{equation}
+wobei 
+\begin{equation}
+\tilde{A} = 
+\begin{pmatrix}
+a_{1,1} & \cdots & a_{1,n-1}    \\
+\vdots  & \ddots & \vdots       \\
+a_{n-1,1} & \cdots & a_{n-1,n-1}\\
+\end{pmatrix}
+\end{equation}
+die obere Hauptuntermatrix $H_{n-1}$ ist. Die verbleibenden Bl\o cke werden wie folgt bezeichnet:
+\begin{align}
+A^{(u)} =
+\begin{pmatrix}
+a_{n,1} & \cdots & a_{n,n-1}
+\end{pmatrix}\\
+A^{(r)} = 
+\begin{pmatrix}
+a_{1,n} \\
+\vdots  \\
+a_{n-1,n} 
+\end{pmatrix}
+\end{align}
+
+Laut Voraussetzung sind die Hauptuntermatrizen $H_m$ regul\a r, also $\det(H_m) \neq 0$. Da laut IB $\tilde{A} = \tilde{L}\tilde{R}$, folgt 
+
+\begin{equation}
+\det(\tilde{A}) = \det(\tilde{L}\tilde{R}) = \det(\tilde{L}) \det(\tilde{R}) 
+\end{equation}
+
+und somit m\u ssen auch $\det(\tilde{L}) \neq 0$ und $\det (\tilde{R}) \neq 0$ gelten und damit sind $\tilde{L}$ und $\tilde{R}$ ebenfalls regul\a r.
+
+Analog zu Abschnitt 2.4 in der Vorlesung gilt:
+\begin{equation}
+L = 
+\begin{pmatrix}
+L_{**} & 		\\
+L_{n*} & 1 \\
+\end{pmatrix}
+\text{ und }
+R = 
+\begin{pmatrix}
+R_{**} & R_{*n} \\
+& r_{nn}
+\end{pmatrix}
+\end{equation}
+wobei $r_{nn}$ analog zu T2, da $l_{11}=1$:
+\begin{equation}
+r_{nn} = a_{nn} - L_{n*}R_{*n}
+\end{equation}
+Ausserdem gilt f\u r die Blockmatrizen:
+\begin{equation}
+A_{n*}=L_{n*}R_{**}
+\text{ bzw. } 
+A_{*n}=L_{**}R_{*n}
+\end{equation}
+
+
+Mit Hilfe vorangegangener Gleichungen folgt also:
+\begin{equation}
+LR = 
+\begin{pmatrix}
+L_{**}R_{**} & L_{**}R_{*n} \\
+L_{n*}R_{**} & L_{n*}R_{*n}+l_{nn}r_{nn}
+\end{pmatrix}
+=
+\begin{pmatrix}
+A_{**} & A_{*n} \\
+A_{n*} & a_{nn}   \\
+\end{pmatrix}
+\end{equation}
+somit l\a sst sich direkt erkennen, dass $LR=A$ gilt und somit sind $L$ und $R$ eine LR-Zerlegung. $_\blacksquare$
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+\end{document}
