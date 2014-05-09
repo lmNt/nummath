@@ -36,6 +36,7 @@
 \section*{T2. LR-Zerlegung an einem Beispiel}
 \begin{itemize}
 \item[a)]
+Die Berechnung der einzelnen Eintr\a ge der $L$ und $R$ Matrix erfolgt \u ber die Matrixmultiplikation.
 
 \begin{align}
 \begin{array}{cccc|cccc|}
@@ -156,22 +157,22 @@ a_{n,1} & \cdots & a_{n,n-1} 	 & a_{n,n}
 \end{array}
 \right)
 \end{equation}
-wobei 
+wobei der obere linke Block
 \begin{equation}
-\tilde{A} = 
+\mbb{A}_{**} = 
 \begin{pmatrix}
 a_{1,1} & \cdots & a_{1,n-1}    \\
 \vdots  & \ddots & \vdots       \\
 a_{n-1,1} & \cdots & a_{n-1,n-1}\\
 \end{pmatrix}
 \end{equation}
-die obere Hauptuntermatrix $H_{n-1}$ ist. Die verbleibenden Bl\o cke werden wie folgt bezeichnet:
+die obere Hauptuntermatrix $H_{n-1}$ ist. Die verbleibenden Bl\o cke werden wie folgt, analog zur Vorlesung, bezeichnet:
 \begin{align}
-A^{(u)} =
+\mbb{A}_{n*} =
 \begin{pmatrix}
 a_{n,1} & \cdots & a_{n,n-1}
 \end{pmatrix}\\
-A^{(r)} = 
+\mbb{A}_{*n} = 
 \begin{pmatrix}
 a_{1,n} \\
 \vdots  \\
@@ -179,37 +180,37 @@ a_{n-1,n}
 \end{pmatrix}
 \end{align}
 
-Laut Voraussetzung sind die Hauptuntermatrizen $H_m$ regul\a r, also $\det(H_m) \neq 0$. Da laut IB $\tilde{A} = \tilde{L}\tilde{R}$, folgt 
+Laut Voraussetzung sind die Hauptuntermatrizen $H_m$ regul\a r, also $\det(H_m) \neq 0$. Da laut IB $\mbb{A}_{**} = \mbb{L}_{**}\mbb{R}_{**}$, gilt 
 
 \begin{equation}
-\det(\tilde{A}) = \det(\tilde{L}\tilde{R}) = \det(\tilde{L}) \det(\tilde{R}) 
+\det(\mbb{A}_{**}) = \det(\mbb{L}_{**}\mbb{R}_{**}) = \det(\mbb{L}_{**}) \det(\mbb{R}_{**}) 
 \end{equation}
 
-und somit m\u ssen auch $\det(\tilde{L}) \neq 0$ und $\det (\tilde{R}) \neq 0$ gelten und damit sind $\tilde{L}$ und $\tilde{R}$ ebenfalls regul\a r.
+und somit muss auch $\det(\mbb{L}_{**}) \neq 0$ und $\det (\mbb{R}_{**}) \neq 0$ gelten und damit sind $\mbb{L}_{**}$ und $\mbb{R}_{**}$ ebenfalls regul\a r.
 
 Analog zu Abschnitt 2.4 in der Vorlesung gilt:
 \begin{equation}
-L = 
+\mbb{L} = 
 \begin{pmatrix}
-L_{**} & 		\\
-L_{n*} & 1 \\
+\mbb{L}_{**} & 		\\
+\mbb{L}_{n*} & 1 \\
 \end{pmatrix}
 \text{ und }
-R = 
+\mbb{R} = 
 \begin{pmatrix}
-R_{**} & R_{*n} \\
+\mbb{R}_{**} & \mbb{R}_{*n} \\
 & r_{nn}
 \end{pmatrix}
 \end{equation}
-wobei $r_{nn}$ analog zu T2, da $l_{11}=1$:
+wobei $r_{nn}$ analog zu T2) berechnet wird, da $l_{11}=1$:
 \begin{equation}
-r_{nn} = a_{nn} - L_{n*}R_{*n}
+r_{nn} = a_{nn} - \mbb{L}_{n*}\mbb{R}_{*n}
 \end{equation}
 Ausserdem gilt f\u r die Blockmatrizen:
 \begin{equation}
-A_{n*}=L_{n*}R_{**}
+\mbb{A}_{n*}=\mbb{L}_{n*}\mbb{R}_{**}
 \text{ bzw. } 
-A_{*n}=L_{**}R_{*n}
+\mbb{A}_{*n}=\mbb{L}_{**}\mbb{R}_{*n}
 \end{equation}
 
 
@@ -217,16 +218,16 @@ Mit Hilfe vorangegangener Gleichungen folgt also:
 \begin{equation}
 LR = 
 \begin{pmatrix}
-L_{**}R_{**} & L_{**}R_{*n} \\
-L_{n*}R_{**} & L_{n*}R_{*n}+l_{nn}r_{nn}
+\mbb{L}_{**}\mbb{R}_{**} & \mbb{L}_{**}\mbb{R}_{*n} \\
+\mbb{L}_{n*}\mbb{R}_{**} & \mbb{L}_{n*}\mbb{R}_{*n}+l_{nn}r_{nn}
 \end{pmatrix}
 =
 \begin{pmatrix}
-A_{**} & A_{*n} \\
-A_{n*} & a_{nn}   \\
+\mbb{A}_{**} & \mbb{A}_{*n} \\
+\mbb{A}_{n*} & a_{nn}   \\
 \end{pmatrix}
 \end{equation}
-somit l\a sst sich direkt erkennen, dass $LR=A$ gilt und somit sind $L$ und $R$ eine LR-Zerlegung. $_\blacksquare$
+somit l\a sst sich direkt erkennen, dass $\mbb{L}\mbb{R}=\mbb{A}$ gilt und somit sind $\mbb{L}$ und $\mbb{R}$ eine LR-Zerlegung von $\mbb{A}$. $_\blacksquare$
  
  
  
