@@ -36,42 +36,55 @@
 \section*{T2. LR-Zerlegung an einem Beispiel}
 \begin{itemize}
 \item[a)]
-Die Berechnung der einzelnen Eintr\a ge der $L$ und $R$ Matrix erfolgt \u ber die Matrixmultiplikation.
+Die Berechnung der einzelnen Eintr\a ge der $\mbb{L}$ und $\mbb{R}$ Matrix erfolgt \u ber die Matrixmultiplikation. Die fehlenden Eintr\a ge der Matrizen sind durch \# dargestellt.
 
-\begin{align}
+\begin{align*}
 \begin{array}{cccc|cccc|}
 \cline{5-8}
- &  &  &         & 2  & -1 & -3 & 3   \\
- &  &  &         & 0  &  2 &  3 & -5  \\ 
- &  &  &         & 0  &  0 &  2 &  7  \\
- &  &  &         & 0  &  0 &  0 & -46 \\ \hline
+ &  &  &         & \#  & \# & \# & \#  \\
+ &  &  &         & 0  &  \# &  \# & \#  \\ 
+ &  &  &         & 0  &  0 &  \# &  \#  \\
+ &  &  &         & 0  &  0 &  0 & \# \\ \hline
 \multicolumn{1}{|c}  1 & 0 & 0 & 0     & 2  & -1 & -3 & 3 \\
-\multicolumn{1}{|c}  2 & 1 & 0 & 0    & 4  & 0 & -3 & 1   \\
-\multicolumn{1}{|c}  3 & 2 & 1 & 0    & 6  & 1 & -1 & 6   \\
-\multicolumn{1}{|c} -1 & -3 & 5 & 1  & -2  & -5 & 4 & 1   \\ \hline
+\multicolumn{1}{|c}  \# & 1 & 0 & 0    & 4  & 0 & -3 & 1   \\
+\multicolumn{1}{|c}  \# & \# & 1 & 0    & 6  & 1 & -1 & 6   \\
+\multicolumn{1}{|c} \# & \# & \# & 1  & -2  & -5 & 4 & 1   \\ \hline
 \end{array}
-\end{align}
+\end{align*}
 
-$r_{1j} = a_{1j}, \quad \forall j\in[1,4]$
-\begin{align}
+F\u r den ersten Schritt gilt $\mbb{R}_{1*} = \mbb{A}_{1*}$. Im Folgenden werden die einzelnen Zeilen bzw. Spalten von $\mbb{L}$ und $\mbb{R}$, also $\mbb{L}_{*1}$, $\mbb{R}_{2*}$, $\mbb{L}_{*2}$, $\mbb{R}_{3*}$, usw., auf folgende Art berechnet:
+\begin{align*}
 1 \cdot r_{11}  &\beequal 2 \rightarrow r_{11}=2  \\ 
 l_{21} r_{11}  &\beequal 4  \rightarrow l_{21}=2  \\
 l_{31} r_{11}  &\beequal 6  \rightarrow l_{31}=3  \\
 l_{41} r_{11}  &\beequal -2 \rightarrow l_{41}=-1 \\
 2 \cdot -1 + 1 \cdot r_{22} &\beequal 0 \rightarrow r_{22} = 2 \\
 2 \cdot -3 + 1 \cdot r_{23} &\beequal -3 \rightarrow r_{23} = 3 \\
-2 \cdot 3  + 1 \cdot r_{24} &\beequal 1  \rightarrow r_{24} = -5 \\
-3 \cdot -1 + l_{32} \cdot 2 &\beequal 1  \rightarrow l_{32} = 2 \\
--1 \cdot -1 + l_{42} \cdot 2 &\beequal -5 \rightarrow l_{42} = -3 \\
-3 \cdot -3 + 2 \cdot 3 + 1 \cdot r_{33} &\beequal -1 \rightarrow r_{33} = 2 \\
-3 \cdot 3 + 2 \cdot -5 + 1 \cdot r_{34} &\beequal 5 \rightarrow r_{34} = 7 \\
--1 \cdot -3 + -3 \cdot 3 + l_{43} \cdot 2 &\beequal 4 \rightarrow l_{43} = 5 \\
--1 \cdot 3 + -3 \cdot -5 + 5 \cdot 7 + 1 \cdot r_{44} &\beequal 1 \rightarrow r_{44}=-46
-\end{align}
+2 \cdot 3  + 1 \cdot r_{24} &\beequal 1  \rightarrow r_{24} = -5\\
+\vdots
+\end{align*}
 
+F\u hrt man alle Schritte aus, so kommt man auf:
+\begin{align*}
+\mbb{L} =
+\begin{pmatrix}
+ 1 & 0 & 0 & 0 \\
+ 2 & 1 & 0 & 0 \\
+ 3 & 2 & 1 & 0 \\
+-1 & -3 & 5 & 1 \\
+\end{pmatrix} 
+\quad
+\mbb{R} =
+\begin{pmatrix}
+2  & -1 & -3 & 3   \\
+0  &  2 &  3 & -5  \\
+0  &  0 &  2 &  7  \\
+0  &  0 &  0 & -46 \\
+\end{pmatrix}
+\end{align*}    
 
 \item[b)]
-Gesucht wird $x$ in $Ax=b$, f\u r
+Gesucht wird $x$ in $\mbb{A}x=b$, f\u r
 \begin{equation}
 b = 
 \begin{pmatrix}
@@ -83,7 +96,7 @@ b =
 \textbf{Vorw\a rtseinsetzen}
 Es gilt:
 \begin{equation}
-Ly=b
+\mbb{L}y=b
 \end{equation}
 In Matrixschreibweise:
 \begin{equation}
@@ -110,7 +123,7 @@ Forw\a rtseinsetzen ergibt folgende Berechnungen:
 -1+30+5+y_4 = -12 &\rightarrow y_4 = -46 \\
 \end{align}
  
-Durch R\u ckw\a rtseinsetzen kann $x$ \u ber die Beziehung $y=Rx$ berechnet werden:
+Durch \textbf{R\u ckw\a rtseinsetzen} kann $x$ \u ber die Beziehung $y=\mbb{R}x$ berechnet werden:
 \begin{equation}
 \begin{pmatrix}
 2 & -1 & -3 & 3 \\
@@ -206,7 +219,7 @@ wobei $r_{nn}$ analog zu T2) berechnet wird, da $l_{11}=1$:
 \begin{equation}
 r_{nn} = a_{nn} - \mbb{L}_{n*}\mbb{R}_{*n}
 \end{equation}
-Ausserdem gilt f\u r die Blockmatrizen:
+Ausserdem gilt f\u r die Blockmatrizen mit Hilfe der Regularit\a t bzw. Invertierbarkeit von $\mbb{L}_{**}$ und $\mbb{R}_{**}$: 
 \begin{equation}
 \mbb{A}_{n*}=\mbb{L}_{n*}\mbb{R}_{**}
 \text{ bzw. } 
@@ -214,7 +227,7 @@ Ausserdem gilt f\u r die Blockmatrizen:
 \end{equation}
 
 
-Mit Hilfe vorangegangener Gleichungen folgt also:
+Mit Hilfe vorangegangener Gleichungen folgt:
 \begin{equation}
 LR = 
 \begin{pmatrix}
