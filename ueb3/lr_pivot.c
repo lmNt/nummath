@@ -88,10 +88,33 @@ void print_matrix(double* a, int rows, int cols){
 
 void lr_pivot(double* a, int n, int ldim, int* p){
    int k, i, j, max;
+   float gamma;
    for (k=0; k<n; k++)
    {
       max = k;
+      for(i = k+1; i < n; i++)
+      {
+         if (fabs(get_entry(a, ldim, i, k)) > fabs(get_entry(a, ldim, max, k)))
+         {
+            max = i;
+         }
+      }
+      p[k] = max;
       
+      for(j = 0; j < n; j++)
+      {
+         gamma = get_entry(a, ldim, k, j);
+         set_entry(a, ldim, k, j, get_entry(a, ldim, max, j));
+         set_entry(a, ldim, max, j, gamma);
+      }
+      for(i = k+1; i < n; i++)
+      {
+         set_entry(a, ldim, i, k, get_entry(a, ldim, i, k)/get_entry(a, ldim, k, k));
+         for(j = k+1; j < n; j++)
+         {
+            set_entry(a, ldim, i, j, get_entry(a, ldim, i, j) - get_entry(a, ldim, i, k) * get_entry(a, ldim, k, j));
+         }
+      }
    }
 }
 
