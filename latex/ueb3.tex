@@ -1,0 +1,78 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0pt
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 3}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T4. Spaltensummennorm}
+Es soll gezeigt werden, dass $\Vert A\Vert_1 = \max_{j=1,...,n} \sum_{i=1}^n |a_{ij}|$ gilt, wobei $\Vert\cdot\Vert_1$ die induzierte Matrixnorm ist. Es gilt ausserdem $\Vert x \Vert_1 = \sum_{i=1}^n |x_i|$. \\
+Zun\a chst wird gezeigt, dass gilt
+\begin{equation}
+\Vert Ax\Vert_1 \leq m \Vert x\Vert_1, \quad \forall x \in \mathbb{R}^n \backslash \{0\}, \quad m=\Vert A \Vert_1
+\label{beh}
+\end{equation}
+Wir beginnen mit der linken Seite der Ungleichung. Da das Produkt $Ax$ einem Vektor entspricht, so muss auch $\Vert\cdot \Vert_1$ f\u r $Ax$ definiert sein. Wir definieren uns die $i$-te Zeile der Matrix $A$ als $a_{i*}$. Es gilt also:
+
+
+Die Ungleichung l\a sst sich also schreiben als:
+\begin{align*}
+\Vert Ax \Vert_1 =  \sum_{i=1}^n |a_{i*}x| = \sum_{i=1}^n \left| \sum_{j=1}^n a_{ij}x_i \right| 
+ \,\,\leq\,\, m \sum_{j=1}^n |x_j| = \max_{j=1,...,n} \sum_{i=1}^n |a_{ij}| \sum_{j=1}^n |x_j| \end{align*}
+Trivialerweise muss gelten, dass:
+\begin{equation}
+ \sum_{i=1}^n \sum_{j=1}^n |a_{ij}||x_j| \leq \max_{j=1,...,n} \sum_{i=1}^n |a_{ij}| \sum_{j=1}^n |x_j|
+\end{equation}
+Es folgt die Ungleichung:
+\begin{equation}
+\sum_{i=1}^n \left| \sum_{j=1}^n a_{ij}x_i \right|  \leq  \sum_{i=1}^n \sum_{j=1}^n |a_{ij}||x_j|
+\end{equation}
+Es l\a sst sich unmittelbar erkennen, dass die linke Ungleichung zu einer Gleichheit wird f\u r $a_{ij} \geq 0$ und $x_i \geq 0,\, \forall i,j \in \{1,...,n\}$, da die Betr\a ge gestrichen werden k\o nnen. Sobald $a_{ij} < 0$ oder $x_i < 0$ f\u r ein beliebiges $i,j \in \{1,...,n\}$ gilt die Ungleichung.\\
+
+Um nun die R\u ckrichtung zu beweisen gen\u gt es einen Vektor zu finden, der \eqref{beh} mit Gleichheit erf\u llt, da dann die Ungleichheit aus \eqref{beh} wegf\a llt. Wir w\a hlen $x=e_k$ und w\a hlen $k$ so, dass $\sum_{i=1}^n |a_{ik}|$ maximal wird, wobei $e_k \in \mathbb{R}^n$ der $k$-te Einheitsvektor ist. Es gilt offensichtlich $\Vert e_k \Vert_1 = 1$. Somit l\a sst sich die linke Seite von \eqref{beh} schreiben als:
+\begin{equation}
+\Vert Ae_k \Vert_1 = \Vert A_{*k} \Vert_1
+\end{equation}
+Wir erhalten also eine Spalte aus der Matrix $A$, die maximal ist. F\u r die Spalte l\a sst sich wiederum $\Vert\cdot\Vert_1$ anwenden, da wir einen Spaltenvektor haben. Es gilt also:
+\begin{equation}
+\Vert A_{*k} \Vert_1 = \sum_{i=1}^n |a_{ik}|
+\end{equation}
+woraus sich mit $\Vert e_k\Vert_1 = 1$ f\u r \eqref{beh} Gleichheit ergibt, da wir $k$ so gew\a hlt haben, dass die Spalte maximal ist:
+\begin{equation}
+\sum_{i=1}^n |a_{ik}| = \max_{j=1,...,n} \sum_{i=1}^n |a_{ij}|.
+\end{equation}
+Somit ist die Behauptung bewiesen. $_\blacksquare$
+
+
+
+
+
+\end{document}
