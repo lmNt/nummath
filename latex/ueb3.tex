@@ -72,7 +72,77 @@ woraus sich mit $\Vert e_k\Vert_1 = 1$ f\u r \eqref{beh} Gleichheit ergibt, da w
 Somit ist die Behauptung bewiesen. $_\blacksquare$
 
 
+\section*{T5. QR-Zerlegung mit Givens-Rotationen an einem Beispiel}
+\begin{itemize}
+\item[a)]
+Gegeben ist die Matrix
+\begin{equation}
+A = 
+\begin{pmatrix}3 & -9 & 7\cr -4 & -13 & -1\cr 0 & -20 & -35\end{pmatrix}
+\end{equation}
+Wir wollen den Eintrag $a_{21} = -4$ Null setzen. Dazu wenden wir eine Givens-Rotation $Q_{12}$ auf $A$ an. Wir w\a hlen $a=3$ und $b=-4$. Wir berechnen uns die Eintr\a ge von $Q$:
+\begin{align*}
+c = \dfrac{a}{\sqrt{a^2+b^2}} \\
+s = \dfrac{b}{\sqrt{a^2+b^2}}
+\end{align*}
+$Q$ ist definiert als:
+\begin{equation}
+Q=
+\begin{pmatrix}
+c & s \\ 
+-s & c
+\end{pmatrix}
+\end{equation}
+Wir wollen $Q_{12}$ bestimmen: 
+\begin{equation}
+Q_{12}=
+\begin{pmatrix}\frac{3}{5} & -\frac{4}{5} & 0\cr \frac{4}{5} & \frac{3}{5} & 0\cr 0 & 0 & 1\end{pmatrix}
+\end{equation}
+Nun berechnen wir:
+\begin{equation}
+A'=Q_{12}A = 
+\begin{pmatrix}5 & 5 & 5\cr 0 & -15 & 5\cr 0 & -20 & -35\end{pmatrix}
+\end{equation}
+
+Da der Eintrag $a'_{31}=0$ ist, k\o nnen wir diesen \u berspringen und den Eintrag $a'_{32}=-20$ Null setzen. Dazu wenden wir die Givens-Rotation $Q_{23}$ an.
+Wir setzen $a=-15$ und $b=-20$ und berechnen $Q_{23}$ analog zu oben:
+\begin{equation}
+Q_{23} = 
+\begin{pmatrix}1 & 0 & 0\cr 0 & -\frac{3}{5} & -\frac{4}{5}\cr 0 & \frac{4}{5} & -\frac{3}{5}\end{pmatrix}
+\end{equation}
+Anschliessend wird die Rotation auf $A'$ angewendet und ergibt:
+\begin{equation}
+R=Q_{23} A' = 
+\begin{pmatrix}5 & 5 & 5\cr 0 & 25 & 25\cr 0 & 0 & 25\end{pmatrix}
+\end{equation}
+$Q$ l\a sst sich nun einfach folgendermassen berechnen:
+\begin{equation}
+Q = (Q_{23}Q_{12})^T = 
+\begin{pmatrix}\frac{3}{5} & -\frac{12}{25} & \frac{16}{25}\cr -\frac{4}{5} & -\frac{9}{25} & \frac{12}{25}\cr 0 & -\frac{4}{5} & -\frac{3}{5}\end{pmatrix}
+\end{equation}
+Zur Probe wird $QR$ gerechnet:
+\begin{equation}
+QR = 
+\begin{pmatrix}3 & -9 & 7\cr -4 & -13 & -1\cr 0 & -20 & -35\end{pmatrix}=\begin{pmatrix}3 & -9 & 7\cr -4 & -13 & -1\cr 0 & -20 & -35\end{pmatrix}
+\end{equation}
+Dies entspricht $A$ und somit ist die QR-Zerlegung richtig.
 
 
+\item[b)]
+Gegeben ist das Gleichungssystem $Ax=b$, mit 
+\begin{equation}
+b=
+\begin{pmatrix}1\cr 2\cr 3\end{pmatrix}
+\end{equation}
+Es wird zun\a chst $z$ bestimmt.
+\begin{equation}
+z=Q^Tb = 
+\begin{pmatrix}-1\cr -\frac{18}{5}\cr -\frac{1}{5}\end{pmatrix}
+\end{equation}
+Nun kann $Rx=z$ gel\o st werden mittels R\u ckw\a rtseinsetzen:
+\begin{equation}
+Q
+\end{equation}
+\end{itemize}
 
 \end{document}
