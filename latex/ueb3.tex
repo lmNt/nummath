@@ -40,8 +40,7 @@ Zun\a chst wird gezeigt, dass gilt
 \Vert Ax\Vert_1 \leq m \Vert x\Vert_1, \quad \forall x \in \mathbb{R}^n \backslash \{0\}, \quad m=\Vert A \Vert_1
 \label{beh}
 \end{equation}
-Wir beginnen mit der linken Seite der Ungleichung. Da das Produkt $Ax$ einem Vektor entspricht, so muss auch $\Vert\cdot \Vert_1$ f\u r $Ax$ definiert sein. Wir definieren uns die $i$-te Zeile der Matrix $A$ als $a_{i*}$. Es gilt also:
-
+Wir beginnen mit der linken Seite der Ungleichung. Da das Produkt $Ax$ einem Vektor entspricht, so muss auch $\Vert\cdot \Vert_1$ f\u r $Ax$ definiert sein. Wir definieren uns die $i$-te Zeile der Matrix $A$ als $a_{i*}$.
 
 Die Ungleichung l\a sst sich also schreiben als:
 \begin{align*}
@@ -139,10 +138,12 @@ Es wird zun\a chst $z$ bestimmt.
 z=Q^Tb = 
 \begin{pmatrix}-1\cr -\frac{18}{5}\cr -\frac{1}{5}\end{pmatrix}
 \end{equation}
-Nun kann $Rx=z$ gel\o st werden mittels R\u ckw\a rtseinsetzen:
-\begin{equation}
-Q
-\end{equation}
+Nun kann $Rx=z$ mittels R\u ckw\a rtseinsetzen gel\o st werden:
+\begin{align*}
+25 x_3 = -\frac{1}{5} \rightarrow x_3 = -\frac{1}{125} \\
+25 x_2 + 25 x_3 = -\frac{18}{5} \rightarrow x_2 = -\frac{17}{125} \\
+5 x_1 + 5 x_2 + 5 x_3 = -1 \rightarrow x_1 = -\frac{7}{125} \\
+\end{align*}
 \end{itemize}
 
 \end{document}
