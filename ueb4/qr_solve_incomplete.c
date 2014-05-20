@@ -30,99 +30,91 @@ void solve_qr_decomp(double* qr, int m, int n, int ldim, double* b, double *x);
 /*#######################################################################################################*/
 
 int main(void){
-  
-  int i, n, j;
-  double *a, *qr, *b, *x;
-  time_t t;
-  time(&t);
-  srand(t);
-  
-  /* Matrixdimension festlegen */
-  n = 3;
-  
-  int rows = 3;
-  int cols = 3;
-  
-  /* Speicher anfordern */
-  a = (double*) malloc(n*n*sizeof(double));
-  qr = (double*) malloc(n*n*sizeof(double));
-  b = (double*) malloc(n*sizeof(double));
-  x = (double*) malloc(n*sizeof(double));
-  
 
-  /* Matrix a erzeugen mit (double) Eintraegen zwischen 0 und 10 */
-  set_entry(a, rows, 0, 0, 2);
-  set_entry(a, rows, 0, 1, 3);
-  set_entry(a, rows, 0, 2, 1);
-  
-  set_entry(a, rows, 1, 0, 4);
-  set_entry(a, rows, 1, 1, 1);
-  set_entry(a, rows, 1, 2, 3);
-  
-  set_entry(a, rows, 2, 0, 5);
-  set_entry(a, rows, 2, 1, 2);
-  set_entry(a, rows, 2, 2, 4);
-  
-  for(i=0;i<rows;i++)
-  {
-    for(j=0;j<cols;j++){
-      //set_entry(a,rows,i,j,(rand() % 200)/20.0);
-      set_entry(qr,rows,i,j,get_entry(a,rows,i,j));
-    }
-  }
-  
-  printf("\na:\n");
-  print_matrix(a,n,n);
-  
-  for(i=0;i<n;i++)
-    b[i] = 0.0;
-  
-  b[0] = 1.0;
-  b[n-1] = 1.0;
-  
+   int i, n, j;
+   double *a, *qr, *b, *x;
+   time_t t;
+   time(&t);
+   srand(t);
 
-  printf("\nb:\n");
-  print_matrix(b,n,1);
-  
-  /* qr-Zerlegung berechnen */
-  qr_decomp(qr,n,n,n);
-  
-  /* Gleichungssystem mit qr-Zerlegung loesen */
-  solve_qr_decomp(qr,n,n,n,b,x);
-  
-  /* Ergebnisse ausgeben */
-  printf("\nLoesung mit qr:\n");
-  print_matrix(x,n,1);
-  
-  printf("\n");
-  
-  /* Speicher freigeben */
-  free(a);
-  free(qr);
-  free(b);
-  free(x);
-  
-  return 0;
+   /* Matrixdimension festlegen */
+   n = 5;
+
+   int rows = 5;
+   int cols = 5;
+
+   /* Speicher anfordern */
+   a = (double*)malloc(n*n*sizeof(double));
+   qr = (double*)malloc(n*n*sizeof(double));
+   b = (double*)malloc(n*sizeof(double));
+   x = (double*)malloc(n*sizeof(double));
+
+
+   /* Matrix a erzeugen mit (double) Eintraegen zwischen 0 und 10 */
+   for (i = 0; i<rows; i++)
+   {
+      for (j = 0; j<cols; j++){
+         set_entry(a, rows, i, j, (rand() % 200) / 20.0);
+         set_entry(qr, rows, i, j, get_entry(a, rows, i, j));
+      }
+   }
+
+   printf("\na:\n");
+   print_matrix(a, n, n);
+
+   for (i = 0; i<n; i++)
+      b[i] = 0.0;
+
+   b[0] = 1.0;
+   b[n - 1] = 1.0;
+
+
+   printf("\nb:\n");
+   print_matrix(b, n, 1);
+
+   /* qr-Zerlegung berechnen */
+   qr_decomp(qr, n, n, n);
+
+
+   printf("\nqr:\n");
+   print_matrix(qr, n, n);
+
+   /* Gleichungssystem mit qr-Zerlegung loesen */
+   solve_qr_decomp(qr, n, n, n, b, x);
+
+   /* Ergebnisse ausgeben */
+   printf("\nLoesung mit qr:\n");
+   print_matrix(x, n, 1);
+
+   printf("\n");
+
+   /* Speicher freigeben */
+   free(a);
+   free(qr);
+   free(b);
+   free(x);
+
+   return 0;
 }
 
 /*#######################################################################################################*/
 
 double get_entry(double* a, int ldim, int row, int col){
-  return a[col*ldim + row];
+   return a[col*ldim + row];
 }
 
 void set_entry(double* a, int ldim, int row, int col, double value){
-  a[col*ldim + row] = value;
+   a[col*ldim + row] = value;
 }
 
 void print_matrix(double* a, int m, int n){
-  int i, j;
-  
-  for(i=0;i<m;i++){
-    for(j=0;j<n;j++)
-      printf(" %.2f\t ",get_entry(a,m,i,j));
-    printf("\n");
-  }
+   int i, j;
+
+   for (i = 0; i<m; i++){
+      for (j = 0; j<n; j++)
+         printf(" %.2f\t ", get_entry(a, m, i, j));
+      printf("\n");
+   }
 }
 
 int min_int(int n, int m){
@@ -131,35 +123,35 @@ int min_int(int n, int m){
 
 void qr_decomp(double* a, int rows, int cols, int ldim){
    double rho, s, c, tau, alpha;
-   int i,k,j;
-   for(k = 0; k < min_int(rows, cols); k++)
+   int i, k, j;
+   for (k = 0; k < min_int(rows, cols); k++)
    {
-      for(i = k+1; i < rows; i++)
+      for (i = k + 1; i < rows; i++)
       {
-         if(get_entry(a, ldim, i, k) == 0)
+         if (get_entry(a, ldim, i, k) == 0)
          {
             rho = 1.0;
             c = 1.0;
             s = 0.0;
          }
-         else if(fabs(get_entry(a, ldim, k, k) >= fabs(get_entry(a, ldim, i, k))))
+         else if (fabs(get_entry(a, ldim, k, k)) >= fabs(get_entry(a, ldim, i, k)))
          {
-            tau = get_entry(a, ldim, i, k)/get_entry(a, ldim, k, k);
-            rho = tau/(sqrt(tau*tau + 1.0));
+            tau = get_entry(a, ldim, i, k) / get_entry(a, ldim, k, k);
+            rho = tau / (sqrt(tau*tau + 1.0));
             s = rho;
-            c = sqrt(1.0-(s*s));
+            c = sqrt(1.0 - (s*s));
          }
          else
          {
-            tau = get_entry(a, ldim, k, k)/get_entry(a, ldim, i, k);
-            rho = sqrt(tau*tau + 1.0)/tau;
-            c = 1.0/rho;
-            s = sqrt(1.0-(c*c));
+            tau = get_entry(a, ldim, k, k) / get_entry(a, ldim, i, k);
+            rho = sqrt(tau*tau + 1.0) / tau;
+            c = 1.0 / rho;
+            s = sqrt(1.0 - (c*c));
          }
          set_entry(a, ldim, k, k, c*get_entry(a, ldim, k, k) + s*get_entry(a, ldim, i, k));
          set_entry(a, ldim, i, k, rho);
-         
-         for(j = k+1; j < cols; j++)
+
+         for (j = k + 1; j < cols; j++)
          {
             alpha = get_entry(a, ldim, k, j);
             set_entry(a, ldim, k, j, c*alpha + s * get_entry(a, ldim, i, j));
@@ -171,15 +163,15 @@ void qr_decomp(double* a, int rows, int cols, int ldim){
 
 
 void backward_subst(double* r, /*int n,*/ int ldim, double* b, double* x){
-	int i,j;
-	for(j = ldim-1; j >= 0; j--)
-	{
-		x[j] = b[j]/get_entry(r, ldim, j, j);
-		for(i = 0; i < j; i++)
-		{
-			b[i] = b[i] - get_entry(r, ldim, i, j) * x[j];
-		}
-	}
+   int i, j;
+   for (j = ldim - 1; j >= 0; j--)
+   {
+      x[j] = b[j] / get_entry(r, ldim, j, j);
+      for (i = 0; i < j; i++)
+      {
+         b[i] = b[i] - get_entry(r, ldim, i, j) * x[j];
+      }
+   }
 }
 
 
@@ -187,27 +179,27 @@ void qr_transform(double* qr, int m, int n, int ldim, double* b)
 {
    double rho, c, s, alpha;
    int k, i;
-   for(k = 0; k < min_int(m,n); k++)
+   for (k = 0; k < min_int(m, n); k++)
    {
-      for(i = k+1; i < m; i++)
+      for (i = k + 1; i < m; i++)
       {
          rho = get_entry(qr, ldim, i, k);
-         if(rho==1)
+         if (rho == 1)
          {
             c = 1;
             s = 0;
          }
-         else if(fabs(rho)<1)
+         else if (fabs(rho)<1)
          {
             s = rho;
-            c = sqrt(1-(s*s));
+            c = sqrt(1 - (s*s));
          }
          else
          {
-            c = 1/rho;
-            s = sqrt(1-c*c);
+            c = 1 / rho;
+            s = sqrt(1 - c*c);
          }
-         
+
          alpha = b[k];
          b[k] = c*alpha + s*b[i];
          b[i] = -s*alpha + c*b[i];
@@ -219,19 +211,10 @@ void solve_qr_decomp(double* qr, int m, int n, int ldim, double* b, double *x)
 {
    double *z;
    int j, i;
-   
-   z = (double*) malloc(n*sizeof(double));
-   
-   /* Loese Qz = b */
-   for(j=0;j<n;j++){
-      z[j] = b[j];
-      for(i=j+1;i<n;i++)
-         b[i] = b[i] - get_entry(qr,ldim,i,j) * z[j];
-   }
+
+   qr_transform(qr, m, n, ldim, b);
    printf("\nz:\n");
-   print_matrix(z, n, 1);
-   
-   backward_subst(qr, ldim, z, x);
-   
-   free(z);
+   print_matrix(b, n, 1);
+
+   backward_subst(qr, ldim, b, x);
 }

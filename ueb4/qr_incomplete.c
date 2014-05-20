@@ -96,35 +96,35 @@ int min_int(int n, int m){
 
 void qr_decomp(double* a, int rows, int cols, int ldim){
    double rho, s, c, tau, alpha;
-   int i,k,j;
-   for(k = 0; k < min_int(rows, cols); k++)
+   int i, k, j;
+   for (k = 0; k < min_int(rows, cols); k++)
    {
-      for(i = k+1; i < rows; i++)
+      for (i = k + 1; i < rows; i++)
       {
-         if(get_entry(a, ldim, i, k) == 0)
+         if (get_entry(a, ldim, i, k) == 0)
          {
             rho = 1.0;
             c = 1.0;
             s = 0.0;
          }
-         else if(fabs(get_entry(a, ldim, k, k) >= fabs(get_entry(a, ldim, i, k))))
+         else if (fabs(get_entry(a, ldim, k, k)) >= fabs(get_entry(a, ldim, i, k)))
          {
-            tau = get_entry(a, ldim, i, k)/get_entry(a, ldim, k, k);
-            rho = tau/(sqrt(tau*tau + 1.0));
+            tau = get_entry(a, ldim, i, k) / get_entry(a, ldim, k, k);
+            rho = tau / (sqrt(tau*tau + 1.0));
             s = rho;
-            c = sqrt(1.0-(s*s));
+            c = sqrt(1.0 - (s*s));
          }
          else
          {
-            tau = get_entry(a, ldim, k, k)/get_entry(a, ldim, i, k);
-            rho = sqrt(tau*tau + 1.0)/tau;
-            c = 1.0/rho;
-            s = sqrt(1.0-(c*c));
+            tau = get_entry(a, ldim, k, k) / get_entry(a, ldim, i, k);
+            rho = sqrt(tau*tau + 1.0) / tau;
+            c = 1.0 / rho;
+            s = sqrt(1.0 - (c*c));
          }
          set_entry(a, ldim, k, k, c*get_entry(a, ldim, k, k) + s*get_entry(a, ldim, i, k));
          set_entry(a, ldim, i, k, rho);
-         
-         for(j = k+1; j < cols; j++)
+
+         for (j = k + 1; j < cols; j++)
          {
             alpha = get_entry(a, ldim, k, j);
             set_entry(a, ldim, k, j, c*alpha + s * get_entry(a, ldim, i, j));
