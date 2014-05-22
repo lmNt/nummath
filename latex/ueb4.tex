@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0pt
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 4}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T6. Householdermatrizen}
+F\u r $v \in \mathbb{R}^n \backslash \{0\}$ ist $H \in \mathbb{R}^{n\times n}$ definiert:
+\begin{equation}
+H = I - \frac{2}{v^*v} vv^*
+\end{equation}
+
+Bei Orthogonalit\a t gilt $HH^*=I$. Ausserdem gilt $v^*v=1$:
+\begin{align}
+HH^* &= (I-\frac{2}{v^*v}vv^*)(I-\frac{2}{v^*v}vv^*) \\
+&=  I - \frac{4}{v^*v}vv^* + \frac{4}{v^*v v^*v} vv^*vv^* \\
+&= I - 4vv^* + 4v(v^*v)v^* = I-4vv^* + 4vv^* = I
+\end{align}
+
+
+
+
+
+
+
+
+\section*{T7. Lineares Ausgleichsproblem}
+
+\end{document}
