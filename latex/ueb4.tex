@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \renewcommand{\baselinestretch}{1.05}
 \usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
-\usepackage{graphics, multirow}
+\usepackage{graphics}
 \topmargin0.0cm
 \headheight0.0cm
 \headsep0.0cm
@@ -46,13 +46,31 @@ HH^* &= (I-\frac{2}{v^*v}vv^*)(I-\frac{2}{v^*v}vv^*) \\
 &= I - 4vv^* + 4v(v^*v)v^* = I-4vv^* + 4vv^* = I
 \end{align}
 
-
-
-
-
-
-
-
 \section*{T7. Lineares Ausgleichsproblem}
+
+Das lineare ausgleichsproblem lautet
+\begin{equation}
+\min = \| \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} -  \begin{bmatrix} 1 & x_1^2 \\ \vdots & \vdots \\ 1 & x_n^2  \end{bmatrix} \begin{bmatrix} a \\ b \end{bmatrix} \|.
+\end{equation}
+
+Daraus folgt die Normalengleichung:
+
+\begin{equation}
+\begin{bmatrix} n & x_1^2 + \dots + x_n^2 \\
+  x_1^2 + \dots + x_n^2 & x_1^4 + \dots + x_n^4
+\end{bmatrix} \begin{bmatrix} a \\ b \end{bmatrix}
+= \begin{bmatrix} 1 & \dots & 1 \\ x_1^2 & \dots & x_n^2 \end{bmatrix} \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix}.
+\end{equation}
+
+Aus dem Zahlenbeispiel ergibt sich fuer die Normalengleichung:
+
+\begin{equation}
+\begin{bmatrix} 30b + 4a \\ 354b + 30a \end{bmatrix} = \begin{bmatrix} 31 \\ 375 \end{bmatrix}
+\end{equation}
+die Loesung dieses Systems beschreibt die Werte $a$ und $b$.
+\begin{align}
+  a &= -\frac{23}{43} \approx -0.5348837 \\
+  b &= \frac{95}{96} \approx 1.1046511
+\end{align}
 
 \end{document}
