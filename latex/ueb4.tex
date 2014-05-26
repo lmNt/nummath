@@ -34,18 +34,21 @@
 \maketitle
 
 \section*{T6. Householdermatrizen}
+\begin{itemize}
+\item[a)]
 F\u r $v \in \mathbb{R}^n \backslash \{0\}$ ist $H \in \mathbb{R}^{n\times n}$ definiert:
 \begin{equation}
 H = I - \frac{2}{v^*v} vv^*
 \end{equation}
 
-Bei Orthogonalit\a t gilt $HH^*=I$. Ausserdem gilt $v^*v=1$:
+Bei Orthogonalit\a t gilt $HH^*=I$:
 \begin{align}
-HH^* &= (I-\frac{2}{v^*v}vv^*)(I-\frac{2}{v^*v}vv^*) \\
-&=  I - \frac{4}{v^*v}vv^* + \frac{4}{v^*v v^*v} vv^*vv^* \\
-&= I - 4vv^* + 4v(v^*v)v^* = I-4vv^* + 4vv^* = I
+HH^* &= \left(I-\frac{2}{v^*v}vv^*\right)\left(I-\frac{2}{v^*v}vv^*\right) \\
+&=  I - \frac{4}{v^*v}vv^* + \frac{4}{(v^*v)^2} vv^*vv^* \\
+&= I -\frac{4}{v^*v}vv^* + \frac{4}{v^*v}vv^* = I
 \end{align}
 
+\item[b)]
 Nach Anwendung der Vorgaben aus b) gilt:
 \begin{equation}
   H = I - 2vv^*
@@ -57,9 +60,18 @@ Nach Anwendung der Vorgaben aus b) gilt:
      &= ke_1
 \end{align}
 
-\section*{T7. Lineares Ausgleichsproblem}
+\item[c)]
+Die Householder Matrix $H$ ist, wie oben bewiesen, orthogonal. Dadurch erf\u llt sie eine der Bedingungen f\u r eine QR Zerlegung, da zur Anwendung eben dieser, orthogonale Matrizen ben\o tigt werden.
 
-Das lineare ausgleichsproblem lautet
+Die Anwendung der Householdermatrix auf eine Matrix $A$ f\u hrt eine Spiegelung der Eintr\a ge $a_{ij}$ an einer Hyperebene, beschrieben durch $v$, durch. Die sukzessive Anwendung der Householdermatrix auf $A$ kann zur Bildung einer oberen-rechten Dreiecksmatrix $R$ verwendet werden, \a hnlich, wie bei der QR-Zerlegung mittels Givens-Rotationen. 
+
+Der elementare Unterschied zur QR-Zerlegung mit Givens-Rotation, besteht darin, dass die Householder Transformation pro Anwendung auf $A$ eine gesamte (Unter-)Spalte eliminiert; im Gegensatz zu einzelnen Eintr\a gen.
+\end{itemize}
+
+\section*{T7. Lineares Ausgleichsproblem}
+\begin{itemize}
+\item[a)]
+Das lineare Ausgleichsproblem lautet
 \begin{equation}
 \min = \| \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} -  \begin{bmatrix} 1 & x_1^2 \\ \vdots & \vdots \\ 1 & x_n^2  \end{bmatrix} \begin{bmatrix} a \\ b \end{bmatrix} \|.
 \end{equation}
@@ -73,6 +85,7 @@ Daraus folgt die Normalengleichung:
 = \begin{bmatrix} 1 & \dots & 1 \\ x_1^2 & \dots & x_n^2 \end{bmatrix} \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix}.
 \end{equation}
 
+\item[b)]
 Aus dem Zahlenbeispiel ergibt sich fuer die Normalengleichung:
 
 \begin{equation}
@@ -83,5 +96,6 @@ die Loesung dieses Systems beschreibt die Werte $a$ und $b$.
   a &= -\frac{23}{43} \approx -0.5348837 \\
   b &= \frac{95}{96} \approx 1.1046511
 \end{align}
+\end{itemize}
 
 \end{document}
