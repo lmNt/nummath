@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "math.h"
+#include <stdlib.h>
+#include <math.h>
 
 double heron(double w, double x0, double eps)
 {
