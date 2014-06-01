@@ -36,7 +36,38 @@
 \maketitle
 
 \section*{T8.) Beispiel einer nichtlinearen Gleichung}
+Mit Hilfe des Banach'schen Fixpunktsatzes soll gezeigt werden, dass es genau ein $x \in [0,\pi]$ gibt, welches 
+\begin{equation}
+\frac{1}{5}\sin(x)\cos(x) = \frac{2x-3}{6}
+\label{eq}
+\end{equation}
+l\o st.\\
+Falls ein Fixpunkt existiert, gilt $\Phi(x) = x$. Umgeformt ergibt sich also:
+\begin{align}
+\Phi(x) = \frac{3}{5}\sin(x)\cos(x)+\frac{3}{2}
+\end{align}
 
+Laut Fixpunktsatz von Banach gilt f\u r eine Iteration $\Phi$ auf einer abgeschlossenen Menge $U \in R^n$ und $x,y \in U$:
+\begin{equation}
+\Vert \Phi(x)-\Phi(y) \Vert \leq L \Vert x-y \Vert \qquad \text{mit } L \in [0,1)
+\end{equation}
+Ist dies erf\u llt, dann besitzt $\Phi$ genau einen Fixpunkt und die Fixpunktiteration iteriert f\u r beliebige Startwerte $x \in U$.
+
+Der Mittelwertsatz der Differentialrechnung besagt:
+\begin{equation}
+\Phi(x)-\Phi(y) \leq \Phi'(\eta) x-y
+\end{equation}
+
+Kombiniert man obige Ans\a tze, so ergibt sich:
+\begin{equation}
+|\Phi(x)- \Phi(y) | = |\Phi'(\eta)||x-y|
+\end{equation}
+mit
+\begin{equation}
+|\Phi'(\eta)| = \left|\frac{3}{5}\cos(2 \eta)\right| \leq 0.6 \quad \forall \eta
+\end{equation}
+
+Somit l\a sst sich $L=0.6$ setzen und erf\u llt die Voraussetzungen des Banach'schen Fixpunktsatzes. Somit ist $\Phi$ eine Kontraktion und die Gleichung \eqref{eq} besitzt einen Fixpunkt.
 
 \section*{T9.) Newton-Verfahren an einem Beispiel}
 Gegeben ist die Funktion $f(x)=x^3 - 3x^2 + x -3$. Die Ableitung lautet $f'(x)=3x^2 - 6x+1$. Die Iterationsvorschrift des Newton-Verfahrens ist wie folgt definiert:
