@@ -42,32 +42,37 @@ Mit Hilfe des Banach'schen Fixpunktsatzes soll gezeigt werden, dass es genau ein
 \label{eq}
 \end{equation}
 l\o st.\\
-Falls ein Fixpunkt existiert, gilt $\Phi(x) = x$. Umgeformt ergibt sich also:
+Falls $\Phi$ einen Fixpunkt besitzt, gilt $\Phi(x) = x$. Umgeformt ergibt sich also f\u r die Gleichung:
 \begin{align}
 \Phi(x) = \frac{3}{5}\sin(x)\cos(x)+\frac{3}{2}
 \end{align}
 
-Laut Fixpunktsatz von Banach gilt f\u r eine Iteration $\Phi$ auf einer abgeschlossenen Menge $U \in R^n$ und $x,y \in U$:
+Laut Fixpunktsatz von Banach gilt f\u r eine Iteration $\Phi$ auf einer abgeschlossenen Menge $U \subseteq R^n$ und $x,y \in U$:
 \begin{equation}
 \Vert \Phi(x)-\Phi(y) \Vert \leq L \Vert x-y \Vert \qquad \text{mit } L \in [0,1)
 \end{equation}
 Ist dies erf\u llt, dann besitzt $\Phi$ genau einen Fixpunkt und die Fixpunktiteration iteriert f\u r beliebige Startwerte $x \in U$.
 
-Der Mittelwertsatz der Differentialrechnung besagt:
+Um $L$ zu bestimmen benutzen wir den Mittelwertsatz der Differentialrechnung:
 \begin{equation}
-\Phi(x)-\Phi(y) \leq \Phi'(\eta) x-y
+\Phi(x)-\Phi(y) \leq \Phi'(\eta) (x-y)
 \end{equation}
 
-Kombiniert man obige Ans\a tze, so ergibt sich:
+Mit diesem Ansatz ergibt sich:
 \begin{equation}
-|\Phi(x)- \Phi(y) | = |\Phi'(\eta)||x-y|
+|\Phi(x)- \Phi(y) | = |\Phi'(\eta)||x-y| \qquad \text{mit } x,y \in [0,\pi]
 \end{equation}
-mit
+mit $\eta \in [0,\pi]$ von $x$ und $y$ abh\a ngige Zwischenpunkte.
+Es gilt:
 \begin{equation}
 |\Phi'(\eta)| = \left|\frac{3}{5}\cos(2 \eta)\right| \leq 0.6 \quad \forall \eta
 \end{equation}
-
-Somit l\a sst sich $L=0.6$ setzen und erf\u llt die Voraussetzungen des Banach'schen Fixpunktsatzes. Somit ist $\Phi$ eine Kontraktion und die Gleichung \eqref{eq} besitzt einen Fixpunkt.
+Nun muss noch gepr\u ft werden, ob $\Phi$ das Intervall $[0, \pi]$ auf sich selbst abbildet. Es gilt:
+\begin{equation}
+\Phi(0)=\frac{6}{5} \geq 0 \qquad \Phi(\pi) = \frac{9}{5} \leq \pi
+\end{equation}
+$\Phi$ bildet das Intervall $[0, \pi]$ auf sich selbst ab.
+Somit l\a sst sich $L=0.6 \in [0,1)$ setzen. Demnach ist $\Phi$ eine Kontraktion und die Gleichung \eqref{eq} besitzt genau einen Fixpunkt.
 
 \section*{T9.) Newton-Verfahren an einem Beispiel}
 Gegeben ist die Funktion $f(x)=x^3 - 3x^2 + x -3$. Die Ableitung lautet $f'(x)=3x^2 - 6x+1$. Die Iterationsvorschrift des Newton-Verfahrens ist wie folgt definiert:
