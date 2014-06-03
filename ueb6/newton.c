@@ -1,0 +1,230 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*Modellierung vektorwertiger Funktionen*/
+typedef void VectorFunctionName(double *x, double *fx, int n);
+typedef VectorFunctionName *VectorFunction;
+
+typedef void MatrixFunctionName(double *x, double *dfx, int n);
+typedef MatrixFunctionName *MatrixFunction;
+
+/*Dies sind Funktionen aus vorherigen Aufgaben*/
+
+/* Eintrag (row,col) aus der Matrix a auslesen */
+double get_entry(double* a, int ldim, int row, int col);
+
+/* Eintrag (row,col) der Matrix a als value setzen */
+void set_entry(double* a, int ldim, int row, int col, double value);
+
+/* Matrix auf dem Bildschirm ausgeben */
+void print_matrix(double* a, int rows, int cols);
+
+/* Berechnet das Minimum der Zahlen n und m */
+int min_int(int n, int m);
+
+/* Berechnet die qr-Zerlegung der (rows x cols)-Matrix a */
+void qr_decomp(double* a, int rows, int cols, int ldim);
+
+/* Loest ein lineares Gleichungssystem durch Rueckwaertseinsetzen */
+void backward_subst(double* r, int n, int ldim, double* b, double* x);
+
+/* Multiplikation von b mit Q* */
+void qr_transform(double* qr, int m, int n, int ldim, double* b);
+
+/* Loest das Gleichungssystem a*x = b mit einer Matrix a in qr-Darstellung */
+void solve_qr_decomp(double* qr, int m, int n, int ldim, double* b, double *x);
+
+
+/*Hier beginnen die neuen Funktionen*/
+
+/*Beispiel aus T10*/
+
+/*Berechnet fx = f(x)*/
+void F_T10(double *x, double *fx, int n);
+
+/*Berechnet dfx = Df(x)*/
+void DF_T10(double *x, double *dfx, int n);
+
+/*Berechnet die euklidische Norm eines Vektors*/
+double norm2(double *x, int n);
+
+/* Newton-Verfahren angwendet auf die Funktion f mit Jacobi-Matrix df, Startvektor x, Genauigkeit eps
+ und maximal maxSteps Schritten
+ Rückgabe: Anzahl der benötigten Schritte bis zur Konvergenz*/
+int newton(double *x, VectorFunction f, MatrixFunction df,double eps, int maxSteps, int n);
+
+/*#######################################################################################################*/
+
+int main(void)
+{
+    double  eps;
+    int maxSteps, n, Steps,i;
+    double *start;
+    VectorFunction f;
+    MatrixFunction df;
+
+    /*Dimension festlegen*/
+    n = 2;
+
+    /* Genauigkeit festlegen */
+    eps = 1e-12;
+
+    /*Anzahl der maximalen Schritte festlegen*/
+    maxSteps = 15;
+
+    /*Startvektor erzeugen und belegen*/
+    start = (double *) malloc(n * sizeof(double));
+
+    /*Für T10*/
+    start[0] = 1.0;
+    start[1] = 0.0;
+
+    /*Beispiel aus T10*/
+    f = F_T10;
+    df = DF_T10;
+
+    /*Beispiel aus T11*/
+    /*f = F_T11;
+    df = DF_T11;*/
+
+    /* Newton-Verfahren durchführen */
+    Steps =  newton(start,f, df,eps, maxSteps, n);
+
+    printf("Nullstelle:\n");
+    for(i=0; i<n; i++)
+        printf("%12.6f ",start[i]);
+    printf("\n");
+    printf("Anzahl der Schritte = %u\n",Steps);
+
+    /*Speicher freigeben*/
+    free(start);
+
+    return 0;
+}
+
+/*#######################################################################################################*/
+
+
+
+double norm2(double *x, int n)
+{
+
+    double norm;
+    /*########################*/
+    /*# Quelltext einfuegen! #*/
+    /*########################*/
+    return norm;
+}
+
+
+void F_T10(double *x, double *fx, int n)
+{
+
+    /*########################*/
+    /*# Quelltext einfuegen! #*/
+    /*########################*/
+}
+
+void DF_T10(double *x, double *dfx, int n)
+{
+
+    /*########################*/
+    /*# Quelltext einfuegen! #*/
+    /*########################*/
+
+}
+
+
+int newton(double *x, VectorFunction f, MatrixFunction df,double eps, int maxSteps, int n)
+{
+
+    int Steps;
+    /*########################*/
+    /*# Quelltext einfuegen! #*/
+    /*########################*/
+    return Steps;
+
+}
+
+double get_entry(double* a, int ldim, int row, int col)
+{
+    return a[col*ldim + row];
+}
+
+void set_entry(double* a, int ldim, int row, int col, double value)
+{
+    a[col*ldim + row] = value;
+}
+
+void print_matrix(double* a, int rows, int cols)
+{
+    int i, j;
+
+    for(i=0; i<rows; i++) {
+        for(j=0; j<cols; j++)
+            printf(" %.2f\t ",get_entry(a,rows,i,j));
+        printf("\n");
+    }
+}
+
+int min_int(int n, int m)
+{
+    return (n >= m ? m : n);
+}
+
+void qr_decomp(double* a, int rows, int cols, int ldim)
+{
+    double rho, s, c, tau, alpha;
+    int i, k, j;
+    for (k = 0; k < min_int(rows, cols); k++) {
+        for (i = k + 1; i < rows; i++) {
+            if (get_entry(a, ldim, i, k) == 0) {
+                rho = 1.0;
+                c = 1.0;
+                s = 0.0;
+            } else if (fabs(get_entry(a, ldim, k, k)) >= fabs(get_entry(a, ldim, i, k))) {
+                tau = get_entry(a, ldim, i, k) / get_entry(a, ldim, k, k);
+                rho = tau / (sqrt(tau*tau + 1.0));
+                s = rho;
+                c = sqrt(1.0 - (s*s));
+            } else {
+                tau = get_entry(a, ldim, k, k) / get_entry(a, ldim, i, k);
+                rho = sqrt(tau*tau + 1.0) / tau;
+                c = 1.0 / rho;
+                s = sqrt(1.0 - (c*c));
+            }
+            set_entry(a, ldim, k, k, c*get_entry(a, ldim, k, k) + s*get_entry(a, ldim, i, k));
+            set_entry(a, ldim, i, k, rho);
+
+            for (j = k + 1; j < cols; j++) {
+                alpha = get_entry(a, ldim, k, j);
+                set_entry(a, ldim, k, j, c*alpha + s * get_entry(a, ldim, i, j));
+                set_entry(a, ldim, i, j, -s*alpha + c* get_entry(a, ldim, i, j));
+            }
+        }
+    }
+}
+
+void backward_subst(double* r, int n, int ldim, double* b, double* x)
+{
+    int i, j;
+    for (j = ldim - 1; j >= 0; j--) {
+        x[j] = b[j] / get_entry(r, ldim, j, j);
+        for (i = 0; i < j; i++) {
+            b[i] = b[i] - get_entry(r, ldim, i, j) * x[j];
+        }
+    }
+}
+
+void solve_qr_decomp(double* qr, int m, int n, int ldim, double* b, double *x)
+{
+    double *z;
+    int j, i;
+
+    qr_transform(qr, m, n, ldim, b);
+    printf("\nz:\n");
+    print_matrix(b, n, 1);
+
+    backward_subst(qr, n, ldim, b, x);
+}
