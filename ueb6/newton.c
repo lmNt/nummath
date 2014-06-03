@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 /*Modellierung vektorwertiger Funktionen*/
 typedef void VectorFunctionName(double *x, double *fx, int n);
@@ -71,7 +72,7 @@ int main(void)
     eps = 1e-12;
 
     /*Anzahl der maximalen Schritte festlegen*/
-    maxSteps = 15;
+    maxSteps = 1;
 
     /*Startvektor erzeugen und belegen*/
     start = (double *) malloc(n * sizeof(double));
@@ -89,7 +90,7 @@ int main(void)
     df = DF_T11;*/
 
     /* Newton-Verfahren durchführen */
-    Steps =  newton(start,f, df,eps, maxSteps, n);
+    Steps = newton(start, f, df, eps, maxSteps, n);
 
     printf("Nullstelle:\n");
     for(i=0; i<n; i++)
@@ -109,42 +110,63 @@ int main(void)
 
 double norm2(double *x, int n)
 {
-
     double norm;
-    /*########################*/
-    /*# Quelltext einfuegen! #*/
-    /*########################*/
+    
+    norm = sqrt(x[0]*x[0] + x[1]*x[1]);
+
     return norm;
 }
 
 
 void F_T10(double *x, double *fx, int n)
 {
-
-    /*########################*/
-    /*# Quelltext einfuegen! #*/
-    /*########################*/
+    fx[0] = cos(x[1]) - 0.2 + exp(1-x[0]);
+    fx[1] = sin(x[1]) + 0.2 + (1+x[1])*x[0] - x[1] - x[0]*x[0];
 }
 
 void DF_T10(double *x, double *dfx, int n)
 {
-
-    /*########################*/
-    /*# Quelltext einfuegen! #*/
-    /*########################*/
-
+    dfx[0] = -1 * exp(1-x[0]);
+    dfx[1] = -1 * sin(x[1]);
+    dfx[2] = 1 + x[1] - 2*x[0];
+    dfx[3] = cos(x[1]) + x[0] - 1;
 }
 
-
-int newton(double *x, VectorFunction f, MatrixFunction df,double eps, int maxSteps, int n)
+int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSteps, int n)
 {
-
     int Steps;
-    /*########################*/
-    /*# Quelltext einfuegen! #*/
-    /*########################*/
-    return Steps;
+    int i;
+    double *fx;
+    double *dfx;
+    double *d;
 
+    d = malloc(n*sizeof(double));
+    fx = malloc(n*sizeof(double));
+    dfx = malloc(n*n*sizeof(double));
+
+    while (norm2(x, n) > eps) {
+      f(x, fx, n);
+      df(x, dfx, n);
+
+      qr_decomp(dfx, n, n, n);
+
+      for (i=0; i<n; i++) {
+        fx[i] = -1 * fx[i];
+      }
+      
+      solve_qr_decomp(dfx, n, n, n, fx, d);
+
+      for (i=0; i<n; i++) {
+        x[i] = x[i] + d[i];
+      }
+
+      if (Steps == maxSteps) {
+        break;
+      }
+      Steps++;
+    }
+    
+    return Steps;
 }
 
 double get_entry(double* a, int ldim, int row, int col)
@@ -228,3 +250,36 @@ void solve_qr_decomp(double* qr, int m, int n, int ldim, double* b, double *x)
 
     backward_subst(qr, n, ldim, b, x);
 }
+
+void qr_transform(double* qr, int m, int n, int ldim, double* b)
+{
+   double rho, c, s, alpha;
+   int k, i;
+   for (k = 0; k < min_int(m, n); k++)
+   {
+      for (i = k + 1; i < m; i++)
+      {
+         rho = get_entry(qr, ldim, i, k);
+         if (rho == 1)
+         {
+            c = 1;
+            s = 0;
+         }
+         else if (fabs(rho)<1)
+         {
+            s = rho;
+            c = sqrt(1 - (s*s));
+         }
+         else
+         {
+            c = 1 / rho;
+            s = sqrt(1 - c*c);
+         }
+
+         alpha = b[k];
+         b[k] = c*alpha + s*b[i];
+         b[i] = -s*alpha + c*b[i];
+      }
+   }
+}
+
