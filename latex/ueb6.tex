@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 6}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T10. mehrdimensionales Newton-Verfahren an einem Beispiel}
+Gegeben ist folgendes nicht-lineares Gleichungssystem:
+\begin{align}
+e^{1-x} = \cos(y)-0.2 \\
+x^2+y-(1+y)x = \sin(y)+0.2
+\end{align}
+
+Um das Gleichungssystem mittels Newton-Verfahren zu L\o sen, stellen wir zun\a chst die Gleichungen um, und erhalten folgende Abbildung:
+\begin{equation}
+f(x,y) = 
+\begin{pmatrix}
+\cos(y) - 0.2 + e^{1-x} \\
+\sin(y) + 0.2 + (1+y)x - y -x^2
+\end{pmatrix}
+\end{equation}
+
+Wir berechnen die Jacobi-Matrix:
+\begin{equation}
+Df(x,y) =
+\begin{pmatrix}
+\frac{\partial f_1}{\partial x} & \frac{\partial f_1}{\partial y} \\
+\frac{\partial f_2}{\partial x} & \frac{\partial f_2}{\partial y}
+\end{pmatrix}
+=
+\begin{pmatrix}
+-e^{1-x} & -\sin(y) \\ 
+1+y-2x & \cos(y)+x-1
+\end{pmatrix}
+\end{equation}
+
+Die Newton-Iterationsvorschrift lautet:
+\begin{equation}
+\mbb{x}^{(m+1)} = \mbb{x}^{(m)} - Df(\mbb{x}^{(m)})^{-1} f(\mbb{x}^{(m)})
+\end{equation}
+
+Mit dem Startwert $(1, 0)^T$ ergibt sich:
+\begin{align*}
+\mbb{x}^{(m+1)} &= 
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+- 
+\begin{pmatrix}
+-1 & 0 \\ -1 & 1
+\end{pmatrix}
+^{-1}
+\cdot
+\begin{pmatrix}
+1.8 \\ 0.2
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+2.8 \\ 1.6
+\end{pmatrix}
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
