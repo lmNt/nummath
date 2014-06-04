@@ -25,6 +25,8 @@
 \renewcommand{\o}{\"{o}}
 \renewcommand{\u}{\"{u}}
 \newcommand{\beequal}{\mathop{=}\limits^!}
+\newcommand{\ray}{\Lambda_A(\mbb{x})}
+\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
 
 \begin{document}
 
@@ -43,7 +45,7 @@ Um das Gleichungssystem mittels Newton-Verfahren zu L\o sen, stellen wir zun\a c
 \begin{equation}
 f(x,y) = 
 \begin{pmatrix}
-\cos(y) - 0.2 + e^{1-x} \\
+\cos(y) - 0.2 - e^{1-x} \\
 \sin(y) + 0.2 + (1+y)x - y -x^2
 \end{pmatrix}
 \end{equation}
@@ -57,7 +59,7 @@ Df(x,y) =
 \end{pmatrix}
 =
 \begin{pmatrix}
--e^{1-x} & -\sin(y) \\ 
+e^{1-x} & -\sin(y) \\ 
 1+y-2x & \cos(y)+x-1
 \end{pmatrix}
 \end{equation}
@@ -75,16 +77,28 @@ Mit dem Startwert $(1, 0)^T$ ergibt sich:
 \end{pmatrix}
 - 
 \begin{pmatrix}
--1 & 0 \\ -1 & 1
+1 & 0 \\ -1 & 1
 \end{pmatrix}
 ^{-1}
 \cdot
 \begin{pmatrix}
-1.8 \\ 0.2
+-0.2 \\ 0.2
 \end{pmatrix} \\
 &=
 \begin{pmatrix}
-2.8 \\ 1.6
+1 \\ 0
+\end{pmatrix}
+- 
+\begin{pmatrix}
+1 & 0 \\ 1 & 1
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+-0.2 \\ 0.2
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+1.2 \\ 0
 \end{pmatrix}
 \end{align*}
 
@@ -92,10 +106,48 @@ Mit dem Startwert $(1, 0)^T$ ergibt sich:
 
 
 
+\section*{T11. Rayleigh-Quotient und Eigenwerte}
+\begin{itemize}
+\item[a)]
+Gegeben ist $A \in \mathbb{R}^{n \times n}$ und symmetrisch. Es soll gezeigt werden, dass der Rayleigh-Quotient
+\begin{equation}
+\Lambda_A(x) = \frac{\langle A\mbb{x},\mbb{x}\rangle_2}{\langle \mbb{x},\mbb{x}\rangle_2} 
+\end{equation}
+in einem Punkt $\mbb{x}\in \mathbb{R}^n \backslash \{0\}$ durch:
+\begin{equation}
+\ray = \frac{2(A\mbb{x} - \ray \mbb{x})}{\langle \mbb{x},\mbb{x}\rangle_2}
+\end{equation}
 
+Zun\a chst werden die partiellen Ableitungen der Skalarprodukte gebildet:
+\begin{align}
+\langle A\mbb{x},\mbb{x}\rangle_2 &= \mbb{x}^TA\mbb{x}  = (A+A^*)\mbb{x} = 2A\mbb{x} \\
+\langle \mbb{x},\mbb{x}\rangle_2 &= \mbb{x}^T\mbb{x} = 2\mbb{x} 
+\end{align}
 
+Mit Hilfe der Quotientenregel ergibt sich:
+\begin{align}
+\dray 
+&= \dfrac{\nabla(\mbb{x}^TA\mbb{x}) (\mbb{x}^T\mbb{x}) - (\mbb{x}^TA\mbb{x}) \nabla(\mbb{x}^T\mbb{x})}{\mbb{x}^T\mbb{x}\mbb{x}^T\mbb{x}} \\
+&= \dfrac{2A\mbb{x}(\mbb{x}^T\mbb{x}) - (\mbb{x}^TA\mbb{x})2\mbb{x} }{\mbb{x}^T\mbb{x}\mbb{x}^T\mbb{x}} \\
+&= \dfrac{2A\mbb{x} - 2\dfrac{\mbb{x}^TA\mbb{x}}{\mbb{x}^T\mbb{x}}\mbb{x}}{\mbb{x}^T\mbb{x}} \\ 
+&= \dfrac{2(A\mbb{x} - \ray \mbb{x})}{\langle \mbb{x},\mbb{x}\rangle_2} _\blacksquare
+\end{align}
 
+\item[b)]
+Gegeben ist $A \in \mathbb{R}^{n \times n}$ und symmetrisch und $\mbb{x}\in \mathbb{R}^n \backslash \{0\}$ ein Punkt, in dem der Rayleigh Quotient $\Lambda_A$ ein Maximum besitzt. Es soll gezeigt werden, dass $\Lambda_A(\mbb{x})$ ein Eigenwert zum Eigenvektor $\mbb{x}$ ist, also $A\mbb{x} = \ray \mbb{x}$ gilt.
 
+F\u r das Maximum gilt, dass
+\begin{equation}
+\dray = \frac{2(A\mbb{x} - \ray \mbb{x})}{\langle \mbb{x},\mbb{x}\rangle_2} = 0
+\label{max}
+\end{equation}
 
+Damit \eqref{max} erf\u llt werden kann, muss der Z\a hler Null werden. Es folgt:
+\begin{align}
+2(A\mbb{x} - \ray \mbb{x}) &\beequal 0 \\
+A\mbb{x} - \ray \mbb{x} &= 0\\
+A\mbb{x} &= \ray \mbb{x} \qquad_\blacksquare
+\end{align}
 
+\end{itemize}
 \end{document}
