@@ -72,7 +72,7 @@ int main(void)
     eps = 1e-12;
 
     /*Anzahl der maximalen Schritte festlegen*/
-    maxSteps = 1;
+    maxSteps = 15;
 
     /*Startvektor erzeugen und belegen*/
     start = (double *) malloc(n * sizeof(double));
@@ -120,16 +120,16 @@ double norm2(double *x, int n)
 
 void F_T10(double *x, double *fx, int n)
 {
-    fx[0] = cos(x[1]) - 0.2 + exp(1-x[0]);
-    fx[1] = sin(x[1]) + 0.2 + (1+x[1])*x[0] - x[1] - x[0]*x[0];
+    fx[0] = cos(x[1]) - 0.2 - exp(1-x[0]);
+    fx[1] = sin(x[1]) + 0.2 - x[0]*x[0] - x[1] + x[0]*(1.0 + x[1]);
 }
 
 void DF_T10(double *x, double *dfx, int n)
 {
-    dfx[0] = -1 * exp(1-x[0]);
-    dfx[1] = -1 * sin(x[1]);
-    dfx[2] = 1 + x[1] - 2*x[0];
-    dfx[3] = cos(x[1]) + x[0] - 1;
+    set_entry(dfx, n, 0, 0, exp(1.0 - x[0]));
+    set_entry(dfx, n, 0, 1, -sin(x[1]));
+    set_entry(dfx, n, 1, 0, -2*x[0] + x[1] + 1.0);
+    set_entry(dfx, n, 1, 1, cos(x[1]) + x[0] - 1.0);
 }
 
 int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSteps, int n)
@@ -139,14 +139,24 @@ int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSt
     double *fx;
     double *dfx;
     double *d;
+    double *x_old;
 
     d = malloc(n*sizeof(double));
     fx = malloc(n*sizeof(double));
     dfx = malloc(n*n*sizeof(double));
 
-    while (norm2(x, n) > eps) {
+    Steps = 0;
+    f(x, fx, n);
+
+    while (norm2(fx, n) > eps) {
       f(x, fx, n);
       df(x, dfx, n);
+
+      printf("fx\n");
+      print_matrix(fx, n, 1);
+
+      printf("Dfx\n");
+      print_matrix(dfx, n, n);
 
       qr_decomp(dfx, n, n, n);
 
@@ -165,6 +175,7 @@ int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSt
       }
       Steps++;
     }
+    
     
     return Steps;
 }
