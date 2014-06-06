@@ -71,7 +71,7 @@ Die Newton-Iterationsvorschrift lautet:
 
 Mit dem Startwert $(1, 0)^T$ ergibt sich:
 \begin{align*}
-\mbb{x}^{(m+1)} &= 
+\mbb{x}^{(1)} &= 
 \begin{pmatrix}
 1 \\ 0
 \end{pmatrix}
@@ -109,7 +109,7 @@ Mit dem Startwert $(1, 0)^T$ ergibt sich:
 \section*{T11. Rayleigh-Quotient und Eigenwerte}
 \begin{itemize}
 \item[a)]
-Gegeben ist $A \in \mathbb{R}^{n \times n}$ und symmetrisch. Es soll gezeigt werden, dass der Rayleigh-Quotient
+Gegeben ist $A \in \mathbb{R}^{n \times n}$ und symmetrisch. Es soll gezeigt werden, dass der Gradient des Rayleigh-Quotienten
 \begin{equation}
 \Lambda_A(x) = \frac{\langle A\mbb{x},\mbb{x}\rangle_2}{\langle \mbb{x},\mbb{x}\rangle_2} 
 \end{equation}
@@ -117,6 +117,7 @@ in einem Punkt $\mbb{x}\in \mathbb{R}^n \backslash \{0\}$ durch:
 \begin{equation}
 \ray = \frac{2(A\mbb{x} - \ray \mbb{x})}{\langle \mbb{x},\mbb{x}\rangle_2}
 \end{equation}
+gegeben ist.
 
 Zun\a chst werden die partiellen Ableitungen der Skalarprodukte gebildet:
 \begin{align}
