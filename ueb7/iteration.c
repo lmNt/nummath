@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
 /* Eintrag (row,col) aus der Matrix a auslesen */
 double get_entry(double* a, int ldim, int row, int col);
