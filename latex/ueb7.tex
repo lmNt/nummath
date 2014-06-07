@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0cm
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+\newcommand{\equalstar}{\mathop{=}\limits^{(1)}}
+\newcommand{\equalsstar}{\mathop{=}\limits^{(2)}}
+\newcommand{\equalssstar}{\mathop{=}\limits^{(3)}}
+\newcommand{\ray}{\Lambda_A(\mbb{x})}
+\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 7}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T12. Eigenwerte und Eigenvektoren des eindimensionalen Modellproblems}
+Es seien $A \in \mathbb{R}^{n \times n}$, $1 \leq n \in \mathbb{N}, h := \frac{1}{n+1}$:
+\begin{equation}
+A=h^{-2}
+\begin{pmatrix}
+2 & -1 & & \\
+-1 & \ddots & \ddots & \\
+ & \ddots & \ddots & -1 \\
+ & & -1 & 2 
+\end{pmatrix}
+\end{equation}
+Definiere den Vektor $e^k \in \mathbb{R}^n$
+\begin{equation}
+e^k_j := \sin(\pi jkh) \text{ f\u r alle } j,k\in \{1,...,n\}
+\end{equation}
+und
+\begin{equation}
+\lambda_k := 4h^{-2} \sin^2(\pi kh/2) \text{ f\u r alle } k\in \{1,...,n\} .
+\end{equation}
+Zeige, dass
+\begin{equation}
+Ae^k = \lambda_ke^k
+\end{equation}
+gilt.\vspace{0.2cm}
+
+Wir betrachten eine beliebige $j$-te Komponente von $(Ae^k)_j$. Mit
+\begin{equation}
+A_{ij} =
+ \begin{cases}
+   2h^{-2}  & \text{falls } i=j \\
+   -h^{-2}  & \text{falls } |i-j|=1 \\
+   0 & \text{sonst }
+  \end{cases}
+\end{equation}
+ergibt sich:
+\begin{align*}
+(Ae^k)_j 
+&= h^{-2} ( 2e^k_j - e^k_{j-1} - e^k_{j+1} ) \\
+&= h^{-2} ( 2\sin(\pi jkh) - \sin(\pi (j-1)kh) - \sin(\pi (j+1)kh) \\
+&= h^{-2} ( 2\sin(\pi jkh) - \sin(\pi jkh - \pi kh) - \sin(\pi jkh + \pi kh) \\
+&\equalstar h^{-2} ( 2\sin(\pi jkh) - \sin(\pi jkh)\cos(- \pi kh) -\cos(\pi jkh)\sin(-\pi kh) \\ & \hspace{0.3cm}- \sin(\pi jkh)\cos(\pi kh) - \cos(\pi jkh)\sin(\pi kh)) \\
+&\equalsstar h^{-2} ( 2\sin(\pi jkh) - 2\sin(\pi jkh)\cos(\pi kh)) \\
+&= h^{-2}\sin(\pi jkh) ( 2 - 2\cos(\pi kh)) \\
+&\equalssstar h^{-2}\sin(\pi jkh)  4\sin^2(\pi kh/2) \\ 
+&= \underbrace{4h^{-2}\sin^2(\pi kh/2)}_{\lambda_k}\underbrace{\sin(\pi jkh)}_{e^k_j} = \lambda_k e^k_j
+\end{align*}
+mit folgenden Theoremen:
+\begin{align*}
+\text{\scriptsize{(1):}}& \qquad \sin(x+y) = \sin(x)\cos(y) + \cos(x)\sin(y) \\ 
+\text{\scriptsize{(2):}}& \qquad \sin(-x) = -\sin(x) \text{ und } \cos(-x) = \cos(x)\\ 
+\text{\scriptsize{(3):}}& \qquad 2-2\cos(x) = 4\sin^2(x/2) 
+\end{align*}
+\section*{T13. Hauptachsentransformation}
+
+
+\end{document}
