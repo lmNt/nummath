@@ -103,8 +103,83 @@ Der Satz von Heine-Borel besagt, dass, wenn  $A \in \mathbb{R}^{n \times n}, A=A
 
 KP OP DAS REICHT.
 \item[b)]
+Sei $A \in \mathbb{R}^{n \times n}, A=A^*$ und $\hat{e} = (1, 0, ..., 0)^* \in \mathbb{R}^n$. Es soll gezeigt werden, dass eine Householder-Matrix $H \in \mathbb{R}^{n \times n}$ mit $He=\alpha \hat{e}, \alpha \in \mathbb{R}$ und ein $\hat{A} \in \mathbb{R}^{(n-1) \times (n-1)}$ mit
+\begin{equation}
+HAH^* =
+\left(
+\begin{array}{c|ccc}
+\lambda & 0 & \hdots & 0    \\\hline
+0  & & &                    \\
+\vdots & & \hat{A} &        \\
+0  & & &
+\end{array}
+\right)
+\end{equation}
+existieren.\vspace{0.3cm}
+
+MAH PROOF!
+
+$H_1e = \alpha \hat{e}$ spiegelt die erste Spalte von $A$ auf ein Vielfaches des ersten Einheitsvektors. Laut Vorlesung (4.6)/(4.7) bzw. T6b) ist der erste Einheitsvektor ein Eigenvektor zum Eigenwert $\lambda_1$. $H$ ist per Definition orthogonal.
+Man definiert einen normierten Eigenvektor $v_1$ von $A$ zum Eigenwert $\lambda$. Bei der Anwendung der Householder-Matrix $H$ auf die symmetrische Matrix $A$ ergibt sich SHIAT.
+
+PROOF KOPIERT AUS SKRIPT UNI SAARBRUECKEN! UMSCHREIBEN
+
+Zu einem reellen Eigenwert $\lambda_1$ w\a hle man einen Eigenvektor $v$ der L\a nge eins und erg\a nze ihn zu einer Orthonormalbasis $(v, w_2, ..., w_n)$. Ist $H$ die Matrix mit diesen Spaltenvektoren, so gilt:
+\begin{align}
+HAH^* &= 
+\begin{pmatrix}
+v^T \\
+w_2^T\\
+\vdots\\
+w_n^T
+\end{pmatrix}
+A
+\begin{pmatrix}
+v & w_2 & \hdots & w_n
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+v^T \\
+w_2^T\\
+\vdots\\
+w_n^T
+\end{pmatrix}
+\begin{pmatrix}
+\lambda v & Aw_2 & \hdots & Aw_n
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\lambda v^Tv & v^TAw_2 & \hdots & v^TAw_n \\ 
+\lambda w_2^Tv & w_2^TAw_2 & \hdots & w_2^TAw_n \\ 
+\vdots & \vdots & & \vdots \\
+\lambda w_n^Tv & w_n^TAw_2 & \hdots & w_n^TAw_n \\ 
+\end{pmatrix}
+\end{align}
+
+Da $v$ auf die L\a nge eins normiert ist und senkrecht auf $w_i, i=2,\hdots,n$ steht, ist der oberste Eintrag in der ersten Spalte $\lambda$, alle anderen verschwinden. In der ersten Zeile beachtet man, dass aufgrund der Symmetrie von $A$ f\u r $i=2,\hdots,n$ gilt:
+\begin{equation}
+v^T A w_i = (A^Tv)^Tw_i = (Av)^Tw_i = \lambda v^Tw_i = 0
+\end{equation}
+wobei in der letzten Gleichheit wieder die Orthogonalit\a t ausgenutzt wurde. Es ist gezeigt
+\begin{equation}
+HAH^* = 
+\begin{pmatrix}
+\lambda & 0 & \hdots & 0 \\ 
+0 & w_2^TAw_2 & \hdots & w_2^TAw_n \\ 
+\vdots & \vdots & & \vdots \\
+0 & w_n^TAw_2 & \hdots & w_n^TAw_n \\ 
+\end{pmatrix}
+\end{equation}
+wobei die verbleibende $(n-1)\times(n-1)$ Restmatrix $\hat{A}$ aufgrund der Symmetrie selbst wieder symmetrisch ist.
 
 \item[c)]
+Es soll bewiesen werden, dass eine orthogonale Matrix $U \in \mathbb{R}^{n \times n}$ und eine Diagonalmatrix $D \in \mathbb{R}^{n \times n}$  existieren mit $UAU^*=D$. 
+
+Der Beweis erfolgt mit vollst\a ndiger Induktion.
+
+$n=1$: Trivial
+
+$n\leq 2$.
 
 \end{itemize}
 
