@@ -110,11 +110,14 @@ int main(void)
 
 double norm2(double *x, int n)
 {
-    double norm;
-    
-    norm = sqrt(x[0]*x[0] + x[1]*x[1]);
+   int i;
+   double res = 0;
 
-    return norm;
+   for (i = 0; i < n; i++)
+   {
+      res += x[i]*y[i];
+   }
+   return sqrt(res);
 }
 
 
@@ -170,13 +173,11 @@ int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSt
         x[i] = x[i] + d[i];
       }
 
+      Steps++;
       if (Steps == maxSteps) {
         break;
       }
-      Steps++;
     }
-    
-    
     return Steps;
 }
 
