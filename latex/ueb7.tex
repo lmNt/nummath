@@ -117,7 +117,7 @@ HAH^* =
 existieren.\vspace{0.3cm}
 
 $H_1e = \alpha \hat{e}$ spiegelt die erste Spalte von $A$ auf ein Vielfaches des ersten Einheitsvektors. Es gilt also (siehe T13a) dass $\Vert e \Vert_2 = 1$, da $\Vert v \Vert_2 = 1$ und somit $\alpha=1$. $H$ ist, wie in T6 bewiesen, orthogonal.
-Man definiert einen normierten Eigenvektor $v$ von $A$ zum Eigenwert $\lambda$. 
+ 
 Mit $\hat{e}=(1,0,\hdots,0)^*$ und $\alpha=1$ und der Symmetrie von $A$ und $H$, sowie Orthogonalit\a t von $H$, ergibt sich:
 
 \begin{align}
@@ -158,8 +158,6 @@ Es soll bewiesen werden, dass eine orthogonale Matrix $U \in \mathbb{R}^{n \time
 
 Der Beweis erfolgt mit vollst\a ndiger Induktion.
 
-$n=1$: Trivial
-
 Induktionsanfang $n = 2$:\\
 Man w\a hlt $U$ als Householdermatrix, also $U=H$. Es gilt:
 \begin{equation}
@@ -173,7 +171,7 @@ und somit ist $D$ diagonal.\\
 
 Induktionsannahme: $UAU^*=D$ gilt f\u r $n$.\\
 
-Induktionsschritt: Wir nehmen an, dass $\tilde{A}\in \mathbb{R}^{(n-1)\times(n-1)}$ und $\tilde{A}=\tilde{A}^*$, sodass auch alle Hauptuntermatrizen von $\tilde{A}$ symmetrisch sind. Mit Hilfe von b) existiert auch eine Householdermatrix $\tilde{H} \in \mathbb{R}^{(n-1)\times(n-1)}$.
+Induktionsschritt: Wir nehmen an, dass $\tilde{A}\in \mathbb{R}^{(n+1)\times(n+1)}$ und $\tilde{A}=\tilde{A}^*$, sodass auch alle Hauptuntermatrizen von $\tilde{A}$ symmetrisch sind. Mit Hilfe von b) existiert auch eine Householdermatrix $\tilde{H} \in \mathbb{R}^{(n+1)\times(n+1)}$.
 Es gilt also:
 \begin{equation}
 \tilde{H}\tilde{A}\tilde{H}^* = 
@@ -187,45 +185,91 @@ Es gilt also:
 \right)
 = \tilde{D}
 \end{equation}
+wobei $\hat{A}$ eine symmetrische $n \times n$-Matrix ist. Laut Induktionsannahme, ist $\hat{A}$ diagonalisierbar, sodass gilt:
+\begin{align}
+C\hat{A}C^*=D 
+\end{align}
 
-Aus IA folgt dass $HAH^*=D$ diagonal ist.
+
+Somit existiert eine orthogonale $(n+1)\times(n+1)$ Matrix $U$, sodass gilt:
 \begin{equation}
+U = 
 \left(
 \begin{array}{c|ccc}
 1 & 0 & \hdots & 0    \\\hline
 0  & & &                    \\
-\vdots & & \tilde{H} &        \\
+\vdots & & C &        \\
 0  & & &
 \end{array}
 \right)
-\tilde{A}
-\left(
-\begin{array}{c|ccc}
-1 & 0 & \hdots & 0    \\\hline
-0  & & &                    \\
-\vdots & & \tilde{H}^* &        \\
-0  & & &
-\end{array}
-\right)
-=
-\left(
-\begin{array}{c|ccc}
-\lambda & 0 & \hdots & 0    \\\hline
-0  & & &                    \\
-\vdots & & D &        \\
-0  & & &
-\end{array}
-\right)
+\tilde{H}
 \end{equation}
 
-Da $D$ diagonal ist, ist $\tilde{D}$ auch diagonal.
+$U$ ist orthogonal, da $\tilde{H}$ orthogonal ist und $C$ per Definition auch orthogonal sein muss. Es l\a sst sich einfach zeigen $UU^*=I$ (wegen Orthogonalit\a t).
 
+Nun muss noch gezeigt werden, dass $U\tilde{A}U^*$ eine Diagonalmatrix ist. Einfacher zu zeigen ist, dass $U^*\hat{A}U$ eine Diagonalmatrix ist:
+\begin{align*}
+U^*\tilde{A}U 
+&= 
+\left[
+\tilde{H}
+\begin{pmatrix}
+1 & 0 \\
+0 & C
+\end{pmatrix}\right]^*
+\tilde{A}
+\tilde{H}
+\begin{pmatrix}
+1 & 0 \\
+0 & C
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+1 & 0 \\
+0 & C
+\end{pmatrix}^*
+\tilde{H}^*
+\tilde{A}
+\tilde{H}
+\begin{pmatrix}
+1 & 0 \\
+0 & C
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+1 & 0 \\
+0 & C^*
+\end{pmatrix}
+\begin{pmatrix}
+\lambda & 0\\
+0 & \hat{A}
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 \\
+0 & C
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+1 & 0 \\
+0 & C^*
+\end{pmatrix}
+\begin{pmatrix}
+\lambda & 0\\
+0 & \hat{A}C
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\lambda & 0\\
+0 & C\hat{A}C^*
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\lambda & 0\\
+0 & D
+\end{pmatrix} _\blacksquare
+\end{align*} 
 
 \end{itemize}
-
-
-
-
 
 \end{document}
 

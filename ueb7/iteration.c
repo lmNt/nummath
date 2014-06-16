@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
    fprintf(F,"%f %f\n",1.0,0.0);
    fclose(F);
    
-   /* Direktes plotten aus C falls gnuplot installiert */
+   /* Direktes plotten aus C in Windows falls gnuplot installiert */
 #if 0
    FILE *pipe = _popen("pgnuplot -persist", "w");
    if (pipe)
