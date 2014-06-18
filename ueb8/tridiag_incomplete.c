@@ -27,8 +27,8 @@ void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, 
 int main(void){
   
   int n, i;
-  double *ld, *d, *ud;
-  double eps;
+  double *ld, *d, *ud, *x;
+  double eps, h, ih;
   FILE *F; 
   /* Matrixdimension festlegen */
   n = 5;
@@ -40,6 +40,7 @@ int main(void){
   ld = (double*) malloc((n-1)*sizeof(double)); 
   d  = (double*) malloc (n   *sizeof(double));
   ud = (double*) malloc((n-1)*sizeof(double));
+  x  = (double*) malloc (n   *sizeof(double));
   
   /* Testmatrix A erzeugen  */
 
@@ -73,7 +74,7 @@ int main(void){
   print_matrix(ud,n-1,1);
   
   /*Inverse Iteration anwenden*/
-  invit_adaptive(ld, d, ud, n,x,eps);
+  invit_adaptive_tridiag(ld, d, ud, n, x, eps);
   
     /* Loesung in Datei schreiben */
   F = fopen("./solution.txt", "w");
@@ -90,6 +91,7 @@ int main(void){
   free(d);
   free(ld);
   free(ud);
+  free(x);
   return 0;
 }
 
@@ -114,11 +116,12 @@ void print_matrix(double* a, int rows, int cols){
 }
 
 void lr_decomp_tridiag(double* ld, double* d, double* ud, int n){
-  
-    /*########################*/
-  /*# Quelltext einfuegen! #*/
-  /*########################*/
-  
+  int i;
+
+  for (i=1; i<n; i++) {
+    d[i] = ud[i] - d[i]*ud[i-1];
+    ld[i] = ud[i-1] / d[i-1];
+  }
 }
 
 void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b, double* x){
