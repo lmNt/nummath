@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0cm
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+\newcommand{\equalstar}{\mathop{=}\limits^{(1)}}
+\newcommand{\equalsstar}{\mathop{=}\limits^{(2)}}
+\newcommand{\equalssstar}{\mathop{=}\limits^{(3)}}
+\newcommand{\rayx}{\Lambda_A(\mbb{x})}
+\newcommand{\rayv}{\Lambda_A(\mbb{v})}
+\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\reall}[2]{\mathbb{R}^{(#1 \times #2)}}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 8}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T14. Eigenwerte und orthogonale Iteration}
+Es seien $n, k \in \nat, n>k$ und $A \in \reall{n}{n}, Q \in \reall{n}{k}$ orthogonal. Es sei $\Lambda := Q^*AQ$ mit Eigenwert $\lambda$ und zugeh\o rigem Eigenvektor $x \in \real^k$, sodass $\Lambda x = \lambda x$. Es sei $y:=Qx$.
+Zu zeigen:
+\begin{equation}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert y \Vert_2} \leq \Vert Q\Lambda - AQ \Vert_2
+\end{equation}
+
+Es gilt $\Lambda \in \reall{k}{k}$. Wir beginnen zun\a chst mit der linken Seite der Ungleichung. Da $Q$ orthogonal ist, gilt $\Vert Qx \Vert_2 = \Vert x \Vert_2$ f\u r alle $x \in \real^k$, woraus folgt:
+
+\begin{align*}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert y \Vert_2} = \frac{\Vert Ay-\lambda y\Vert_2}{\Vert Qx \Vert_2} = \frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2}
+\end{align*}
+
+Es folgt:
+\begin{align*}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2} &\leq \Vert Q\Lambda - AQ \Vert_2 \\
+&\leq \Vert Q (Q^*AQ)-AQ \Vert_2 \\ 
+&\leq \Vert (Q Q^*)AQ-AQ \Vert_2 \\
+&\leq \Vert AQ-AQ \Vert_2 \\
+&\leq \Vert 0 \Vert_2 \\
+&\leq 0 \\
+\end{align*}
+
+Es folgt somit, dass $\frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2} = 0$ sein muss. Der Nenner darf nicht Null sein, somit muss gelten $\Vert Ay-\lambda y\Vert_2 = 0$. Mit der Definitheit der euklidischen Norm folgt $ Ay-\lambda y = 0$. Mit $y=Qx$ folgt:
+\begin{equation}
+AQx-\lambda Qx=0Q
+\end{equation}
+
+
+\section*{T15. Wilkinson-Shift}
+Gegeben:
+\begin{equation}
+S= 
+\begin{pmatrix}
+a_{n-1,n-1}^{(m)} & a_{n-1,n}^{(m)} \\
+a_{n,n-1}^{(m)} & a_{n,n}^{(m)} 
+\end{pmatrix}
+\end{equation}
+
+Wir suchen die Nullstellen des charakteristischen Polynoms:
+\begin{align}
+p_S(\lambda) = |\lambda I-S| \\
+&= \left| 
+\begin{pmatrix}
+a_{n-1,n-1}^{(m)} & a_{n-1,n}^{(m)} \\
+a_{n,n-1}^{(m)} & a_{n,n}^{(m)} 
+\end{pmatrix}
+\right| \\
+&= (\lambda - a_{n-1,n-1}^{(m)})(\lambda - a_{n,n}^{(m)}) - |a_{n-1,n}^{(m)}|^2
+\end{align}
+
+Mit Hilfe des Hinweises
+\begin{equation}
+m:=\frac{a_{n-1,n-1}^{(m)}+a_{n,n}^{(m)}}{2} \qquad d:=\frac{a_{n-1,n-1}^{(m)}-a_{n,n}^{(m)}}{2}
+\end{equation}
+
+ergibt sich:
+\begin{align}
+p_S(\lambda) &= (\lambda -m -d)(\lambda - m + d) - |a_{n-1,n}^{(m)}|^2\\
+&= (\lambda - m)^2 - d^2 - |a_{n-1,n}^{(m)}|^2
+\end{align}
+
+und damit ergibt sich f\u r die Eigenwerte, nach Umstellen:
+\begin{equation}
+\lambda = m \pm \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2}
+\end{equation}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
