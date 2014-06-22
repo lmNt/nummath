@@ -32,7 +32,7 @@ int main(void){
   double eps, h, ih;
   FILE *F; 
   /* Matrixdimension festlegen */
-  n = 3;
+  n = 5;
   
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
@@ -66,12 +66,11 @@ int main(void){
   printf("\nud:\n");
   print_matrix(ud,n-1,1);
   
-  //solve_lr_decomp_tridiag(ld, d, ud, n, b, x);
-
 
   /* lr-Zerlegung berechnen */
   lr_decomp_tridiag(ld, d, ud,n);
-  
+
+
   /* Matrix ausgeben */
  
   printf("lr-zerlegung\n");
@@ -81,6 +80,9 @@ int main(void){
   print_matrix(d,n,1);
   printf("\nud:\n");
   print_matrix(ud,n-1,1);
+
+  solve_lr_decomp_tridiag(ld, d, ud, n, b, x);
+  print_matrix(x, n, 1);
   
   /*Inverse Iteration anwenden*/
   invit_adaptive_tridiag(ld, d, ud, n, x, eps);
@@ -142,7 +144,23 @@ void lr_decomp_tridiag(double* ld, double* d, double* ud, int n)
   memcpy(d, b, n*sizeof(double));
 }
 
-void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b, double* x){
+void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b, double* x)
+{
+  int i;
+  double *y;
+  y = (double*) malloc(n*sizeof(double));
+
+  /* Forward substitution */
+  y[0] = b[0];
+  for (i = 1; i < n; i++) {
+    y[i] = b[i-1] - ld[i-1]*y[i-1];
+  }
+
+  /* Backward substitution */
+  x[n-1] = y[n-1] / d[n-1];
+  for (i = n-2; i >= 0; i--) {
+    x[i] = (y[i] - ud[i]*x[i+1])/d[i];
+  }
 }
 
 void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, double eps){
