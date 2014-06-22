@@ -115,7 +115,7 @@ double norm2(double *x, int n)
 
    for (i = 0; i < n; i++)
    {
-      res += x[i]*y[i];
+      res += x[i]*x[i];
    }
    return sqrt(res);
 }
@@ -177,6 +177,9 @@ int newton(double *x, VectorFunction f, MatrixFunction df, double eps, int maxSt
       if (Steps == maxSteps) {
         break;
       }
+      
+      f(x, fx, n);
+      df(x, dfx, n);
     }
     return Steps;
 }
