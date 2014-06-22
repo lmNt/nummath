@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <stdafx.h>
 
 /* Eintrag (row,col) aus der Matrix a auslesen */
 double get_entry(double* a, int ldim, int row, int col);
@@ -260,9 +261,7 @@ double norm_frob(double* a, int ldim, int m, int n){
 }
 
 void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k){
-  /*########################*/
-  /*# Quelltext einfuegen! #*/
-  /*########################*/
+   
 }
 
 void orthoit(double* a, int lda, int n, double* x, int k, double eps){

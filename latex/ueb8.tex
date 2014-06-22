@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0cm
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+\newcommand{\equalstar}{\mathop{=}\limits^{(1)}}
+\newcommand{\equalsstar}{\mathop{=}\limits^{(2)}}
+\newcommand{\equalssstar}{\mathop{=}\limits^{(3)}}
+\newcommand{\rayx}{\Lambda_A(\mbb{x})}
+\newcommand{\rayv}{\Lambda_A(\mbb{v})}
+\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\reall}[2]{\mathbb{R}^{(#1 \times #2)}}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 8}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T14. Eigenwerte und orthogonale Iteration}
+Es seien $n, k \in \nat, n>k$ und $A \in \reall{n}{n}, Q \in \reall{n}{k}$ orthogonal. Es sei $\Lambda := Q^*AQ$ mit Eigenwert $\lambda$ und zugeh\o rigem Eigenvektor $x \in \real^k$, sodass $\Lambda x = \lambda x$. Es sei $y:=Qx$.
+Zu zeigen:
+\begin{equation}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert y \Vert_2} \leq \Vert Q\Lambda - AQ \Vert_2
+\end{equation}
+
+Es gilt $\Lambda \in \reall{k}{k}$. Wir beginnen zun\a chst mit der linken Seite der Ungleichung. Da $Q$ orthogonal ist, gilt $\Vert Qx \Vert_2 = \Vert x \Vert_2$ f\u r alle $x \in \real^k$, woraus folgt:
+
+\begin{align*}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert y \Vert_2} = \frac{\Vert Ay-\lambda y\Vert_2}{\Vert Qx \Vert_2} = \frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2}
+\end{align*}
+
+Es folgt:
+\begin{align*}
+\frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2} &\leq \Vert Q\Lambda - AQ \Vert_2 \\
+&\leq \Vert Q (Q^*AQ)-AQ \Vert_2 \\ 
+&\leq \Vert (Q Q^*)AQ-AQ \Vert_2 \\
+&\leq \Vert AQ-AQ \Vert_2 \\
+&\leq \Vert 0 \Vert_2 \\
+&\leq 0 \\
+\end{align*}
+
+Es folgt somit, dass $\frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2} = 0$ sein muss. Der Nenner darf nicht Null sein, somit muss gelten $\Vert Ay-\lambda y\Vert_2 = 0$. Mit der Definitheit der euklidischen Norm folgt $ Ay-\lambda y = 0$. Mit $y=Qx$ folgt:
+\begin{equation}
+AQx-\lambda Qx=0
+\end{equation}
+
+Wir multiplizieren mit $Q^*$ auf beiden Seiten und erhalten, unter Ausnutzung der Orthogonalit\a t:
+\begin{align*}
+AQx-\lambda Qx &= Q^*AQx-\lambda Q^*Qx \\
+&= (Q^*AQ)x-\lambda (Q^*Q)x \\
+&= \Lambda x - \lambda x  = 0 \\
+&\Rightarrow  \Lambda x = \lambda x \qquad _\blacksquare
+\end{align*}
+
+\section*{T15. Wilkinson-Shift}
+Gegeben:
+\begin{equation}
+S= 
+\begin{pmatrix}
+a_{n-1,n-1}^{(m)} & a_{n-1,n}^{(m)} \\
+a_{n,n-1}^{(m)} & a_{n,n}^{(m)} 
+\end{pmatrix}
+\end{equation}
+
+Wir suchen die Nullstellen des charakteristischen Polynoms:
+\begin{align}
+p_S(\lambda) &= |\lambda I-S| \\
+&= \left| 
+\begin{pmatrix}
+\lambda - a_{n-1,n-1}^{(m)} & -a_{n-1,n}^{(m)} \\
+-a_{n,n-1}^{(m)} & \lambda - a_{n,n}^{(m)} 
+\end{pmatrix}
+\right| \\
+&= (\lambda - a_{n-1,n-1}^{(m)})(\lambda - a_{n,n}^{(m)}) - |a_{n-1,n}^{(m)}|^2
+\end{align}
+
+Mit Hilfe des Hinweises
+\begin{equation}
+m:=\frac{a_{n-1,n-1}^{(m)}+a_{n,n}^{(m)}}{2} \qquad d:=\frac{a_{n-1,n-1}^{(m)}-a_{n,n}^{(m)}}{2}
+\end{equation}
+
+ergibt sich:
+\begin{equation}
+p_S(\lambda) = (\lambda -m -d)(\lambda - m + d) - |a_{n-1,n}^{(m)}|^2
+\end{equation}
+
+Mit Hilfe der dritten binomischen Gleichung erhalten wir
+\begin{equation}
+p_S(\lambda) = (\lambda - m)^2 - d^2 - |a_{n-1,n}^{(m)}|^2
+\end{equation}
+
+und damit ergibt sich f\u r die Eigenwerte, nach Umstellen:
+\begin{equation}
+\lambda = m \pm \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2}
+\end{equation}
+
+Laut Wilkinson, soll der Shift als Eigenwert der rechtsuntersten $2\times 2$-Teilmatrix gew\a hlt werden, der am n\a chsten an $a_{n,n}$ liegt. Wir w\a hlen also als Nullstelle von $p_S(\lambda)$, diejenige bei der der Shift $\mu$ am n\a chsten am derzeitigen Iterationsschritt von $a_{n,n}^{(m)}$ liegt.
+
+Wir f\u hren eine Fallunterscheidung durch:
+\begin{align*}
+d>0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} > a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} < m \\
+d=0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} = a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} = m \\
+d<0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} < a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} > m \\
+\end{align*}
+
+Es l\a sst sich erkennen, dass bei $d>0$, $a_{n,n}^{(m)} < m$ gilt. Somit muss $\mu$ nach unten korrigiert werden. Es ergibt sich der erste Fall in \eqref{final}. Die beiden letzten F\a lle fassen wir zusammen, sodass aus $d\leq 0$, $a_{n,n}^{(m)} \geq m$ folgt. $\mu$ muss also gar nicht, oder nach oben korrigiert werden.
+\begin{equation}
+\mu = 
+\begin{cases}
+m - \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2} \quad \text{ falls $d>0$,} \\
+m + \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2} \quad \text{ sonst.} 
+\end{cases}
+\label{final}
+\end{equation}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
