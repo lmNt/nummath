@@ -67,7 +67,7 @@ Es folgt:
 
 Es folgt somit, dass $\frac{\Vert Ay-\lambda y\Vert_2}{\Vert x \Vert_2} = 0$ sein muss. Der Nenner darf nicht Null sein, somit muss gelten $\Vert Ay-\lambda y\Vert_2 = 0$. Mit der Definitheit der euklidischen Norm folgt $ Ay-\lambda y = 0$. Mit $y=Qx$ folgt:
 \begin{equation}
-AQx-\lambda Qx=0Q
+AQx-\lambda Qx=0
 \end{equation}
 
 
@@ -83,11 +83,11 @@ a_{n,n-1}^{(m)} & a_{n,n}^{(m)}
 
 Wir suchen die Nullstellen des charakteristischen Polynoms:
 \begin{align}
-p_S(\lambda) = |\lambda I-S| \\
+p_S(\lambda) &= |\lambda I-S| \\
 &= \left| 
 \begin{pmatrix}
-a_{n-1,n-1}^{(m)} & a_{n-1,n}^{(m)} \\
-a_{n,n-1}^{(m)} & a_{n,n}^{(m)} 
+\lambda - a_{n-1,n-1}^{(m)} & -a_{n-1,n}^{(m)} \\
+-a_{n,n-1}^{(m)} & \lambda - a_{n,n}^{(m)} 
 \end{pmatrix}
 \right| \\
 &= (\lambda - a_{n-1,n-1}^{(m)})(\lambda - a_{n,n}^{(m)}) - |a_{n-1,n}^{(m)}|^2
@@ -99,16 +99,38 @@ m:=\frac{a_{n-1,n-1}^{(m)}+a_{n,n}^{(m)}}{2} \qquad d:=\frac{a_{n-1,n-1}^{(m)}-a
 \end{equation}
 
 ergibt sich:
-\begin{align}
-p_S(\lambda) &= (\lambda -m -d)(\lambda - m + d) - |a_{n-1,n}^{(m)}|^2\\
-&= (\lambda - m)^2 - d^2 - |a_{n-1,n}^{(m)}|^2
-\end{align}
+\begin{equation}
+p_S(\lambda) = (\lambda -m -d)(\lambda - m + d) - |a_{n-1,n}^{(m)}|^2
+\end{equation}
+
+Mit Hilfe der dritten binomischen Gleichung erhalten wir
+\begin{equation}
+p_S(\lambda) = (\lambda - m)^2 - d^2 - |a_{n-1,n}^{(m)}|^2
+\end{equation}
 
 und damit ergibt sich f\u r die Eigenwerte, nach Umstellen:
 \begin{equation}
 \lambda = m \pm \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2}
 \end{equation}
 
+Laut Wilkinson, soll der Shift als Eigenwert der rechtsuntersten $2\times 2$-Teilmatrix gew\a hlt werden, der am n\a chsten an $a_{n,n}$ liegt. Wir w\a hlen also als Nullstelle von $p_S(\lambda)$, diejenige bei der der Shift $\mu$ am n\a chsten am derzeitigen Iterationsschritt von $a_{n,n}^{(m)}$ liegt.
+
+Wir f\u hren eine Fallunterscheidung durch:
+\begin{align*}
+d>0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} > a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} < m \\
+d=0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} = a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} = m \\
+d<0 \quad \Rightarrow \quad a_{n-1,n-1}^{(m)} < a_{n,n}^{(m)}  \quad \Rightarrow \quad a_{n,n}^{(m)} > m \\
+\end{align*}
+
+Es l\a sst sich erkennen, dass bei $d>0$, $a_{n,n}^{(m)} < m$ gilt. Somit muss $\mu$ nach unten korrigiert werden. Es ergibt sich der erste Fall in \eqref{final}. Die beiden letzten F\a lle fassen wir zusammen, sodass aus $d\leq 0$, $a_{n,n}^{(m)} \geq m$ folgt. $\mu$ muss also gar nicht, oder nach oben korrigiert werden.
+\begin{equation}
+\mu = 
+\begin{cases}
+m - \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2} \quad \text{ falls $d>0$,} \\
+m + \sqrt{d^2 + |a_{n-1,n}^{(m)}|^2} \quad \text{ sonst.} 
+\end{cases}
+\label{final}
+\end{equation}
 \end{document}
 
 
