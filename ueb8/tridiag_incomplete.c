@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Eintrag (row,col) aus der Matrix a auslesen */
 double get_entry(double* a, int ldim, int row, int col);
@@ -27,11 +28,11 @@ void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, 
 int main(void){
   
   int n, i;
-  double *ld, *d, *ud, *x;
+  double *ld, *d, *ud, *x, *b;
   double eps, h, ih;
   FILE *F; 
   /* Matrixdimension festlegen */
-  n = 5;
+  n = 3;
   
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
@@ -41,6 +42,12 @@ int main(void){
   d  = (double*) malloc (n   *sizeof(double));
   ud = (double*) malloc((n-1)*sizeof(double));
   x  = (double*) malloc (n   *sizeof(double));
+
+  b  = (double*) malloc (n   *sizeof(double));
+
+  for (i = 0; i < n; i++) {
+    b[i] = 2;
+  }
   
   /* Testmatrix A erzeugen  */
 
@@ -59,7 +66,9 @@ int main(void){
   printf("\nud:\n");
   print_matrix(ud,n-1,1);
   
-  
+  //solve_lr_decomp_tridiag(ld, d, ud, n, b, x);
+
+
   /* lr-Zerlegung berechnen */
   lr_decomp_tridiag(ld, d, ud,n);
   
@@ -110,26 +119,30 @@ void print_matrix(double* a, int rows, int cols){
   
   for(i=0;i<rows;i++){
     for(j=0;j<cols;j++)
-      printf(" %.2f\t ",get_entry(a,rows,i,j));
+      printf(" %.2f\t ", get_entry(a,rows,i,j));
     printf("\n");
   }
 }
 
-void lr_decomp_tridiag(double* ld, double* d, double* ud, int n){
+void lr_decomp_tridiag(double* ld, double* d, double* ud, int n)
+{
   int i;
+  double *a, *b;
+  a = (double*) malloc((n-1)*sizeof(double));
+  b = (double*) malloc(n*sizeof(double));
 
-  for (i=1; i<n; i++) {
-    d[i] = ud[i] - d[i]*ud[i-1];
-    ld[i] = ud[i-1] / d[i-1];
+  b[0] = d[0];
+
+  for (i = 1; i < n; i++) {
+    a[i-1] = ld[i-1] / b[i-1];
+    b[i] = d[i-1] - a[i-1] * ud[i-1];
   }
+
+  memcpy(ld, a, (n-1)*sizeof(double));
+  memcpy(d, b, n*sizeof(double));
 }
 
 void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b, double* x){
-
-    /*########################*/
-  /*# Quelltext einfuegen! #*/
-  /*########################*/
-  
 }
 
 void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, double eps){
