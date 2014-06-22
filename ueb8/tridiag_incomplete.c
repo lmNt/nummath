@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 /* Eintrag (row,col) aus der Matrix a auslesen */
 double get_entry(double* a, int ldim, int row, int col);
@@ -22,6 +23,14 @@ void solve_lr_decomp_tridiag(double* ld, double *d, double *ud, int n, double* b
  *anwenden und bei Genauigkeit eps abbrechen */
 void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, double eps);
 
+/* Berechnet die euklidische Norm */
+double norm_2(double* x, int n);
+
+/* Berechnet das euklidische Skalarprodukt */
+double scalar_2(double* x, double* y, int n);
+
+void div_vec_by_const(double* res, double* vec, const double c, int n);
+
 
 /*#######################################################################################################*/
 
@@ -32,7 +41,7 @@ int main(void){
   double eps, h, ih;
   FILE *F; 
   /* Matrixdimension festlegen */
-  n = 5;
+  n = 100;
   
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
@@ -43,12 +52,6 @@ int main(void){
   ud = (double*) malloc((n-1)*sizeof(double));
   x  = (double*) malloc (n   *sizeof(double));
 
-  b  = (double*) malloc (n   *sizeof(double));
-
-  for (i = 0; i < n; i++) {
-    b[i] = 2;
-  }
-  
   /* Testmatrix A erzeugen  */
 
   for(i=0;i<=n-2;i++){
@@ -57,7 +60,11 @@ int main(void){
     ud[i] = -1;
   }
    d[n-1] = 2;
-   
+
+  /* Zufaelligen Startvektor erzeugen */
+  for(i=0;i<n;i++)
+    x[i] = (rand() % 90)/10.0 + 1.0;
+
   /* Matrix ausgeben */
   printf("\nld:\n");
   print_matrix(ld,n-1,1);
@@ -68,7 +75,7 @@ int main(void){
   
 
   /* lr-Zerlegung berechnen */
-  lr_decomp_tridiag(ld, d, ud,n);
+  //lr_decomp_tridiag(ld, d, ud,n);
 
 
   /* Matrix ausgeben */
@@ -81,9 +88,6 @@ int main(void){
   printf("\nud:\n");
   print_matrix(ud,n-1,1);
 
-  solve_lr_decomp_tridiag(ld, d, ud, n, b, x);
-  print_matrix(x, n, 1);
-  
   /*Inverse Iteration anwenden*/
   invit_adaptive_tridiag(ld, d, ud, n, x, eps);
   
@@ -163,12 +167,67 @@ void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b
   }
 }
 
-void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, double eps){
+double norm_2(double* x, int n){
+   return sqrt(scalar_2(x,x,n));
+}
 
-  /*########################*/
-  /*# Quelltext einfuegen! #*/
-  /*########################*/
-  
+double scalar_2(double* x, double* y, int n){
+   int i;
+   double res = 0;
+
+   for (i = 0; i < n; i++)
+   {
+      res += x[i]*y[i];
+   }
+   return res;
+}
+
+void div_vec_by_const(double* res, double* vec, const double c, int n)
+{
+   int i;
+   for (i = 0; i < n; i++)
+   {
+      res[i] = vec[i]/c;
+   }
+}
+
+void invit_adaptive_tridiag(double* ld, double* d, double* u, int n, double* x, double eps)
+{
+  double *y, *test, *b;
+  double gamma, lambda;
+  int i;
+
+  y = (double*) malloc(n*sizeof(double));
+  test = (double*) malloc(n*sizeof(double));
+  b = (double*) malloc(n*sizeof(double)); 
+
+  gamma = norm_2(x, n);
+  div_vec_by_const(x, x, gamma, n);
+
+  lr_decomp_tridiag(ld, d, u, n);
+  solve_lr_decomp_tridiag(ld, d, u, n, x, y);
+
+  lambda = scalar_2(y,x,n);
+
+  while (1)
+  {
+    for (i = 0; i < n; i++)
+    {
+      test[i] = lambda*x[i] - y[i];
+    }
+    if ( norm_2(test, n) <= (eps * norm_2(y,n)) ) break;
+
+    gamma = norm_2(y,n);
+    div_vec_by_const(x, y, gamma, n);
+
+    solve_lr_decomp_tridiag(ld, d, u, n, x, y);
+    lambda = scalar_2(y,x,n);
+  }
+
+  /* Hilfsspeicher freigeben */
+  free(y);
+  free(test);
+  free(b);
 }
 
 
