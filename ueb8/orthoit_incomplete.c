@@ -63,8 +63,6 @@ int main(void){
   /* Anzahl der Startvektoren festlegen */
   k = 4;
 
-
-  
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
   
@@ -75,30 +73,6 @@ int main(void){
   /* Zufaellige Startvektoren erzeugen und in Matrix x zusammenfassen*/
    for(i=0;i<n*k;i++)
      x[i] = (rand() % 90)/10.0 + 1.0;
-  
-
-   //set_entry(x, n, 0, 0, 1.70);
-   //set_entry(x, n, 0, 1, 6.90);
-   //set_entry(x, n, 0, 2, 5.10);
-   //set_entry(x, n, 0, 3, 7.40);
-   //set_entry(x, n, 1, 0, 3.20);
-   //set_entry(x, n, 1, 1, 1.90);
-   //set_entry(x, n, 1, 2, 2.80);
-   //set_entry(x, n, 1, 3, 4.80);
-   //set_entry(x, n, 2, 0, 3.10);
-   //set_entry(x, n, 2, 1, 6.60);
-   //set_entry(x, n, 2, 2, 3.20);
-   //set_entry(x, n, 2, 3, 7.00);
-   //set_entry(x, n, 3, 0, 5.40);
-   //set_entry(x, n, 3, 1, 2.00);
-   //set_entry(x, n, 3, 2, 6.10);
-   //set_entry(x, n, 3, 3, 7.20);
-   //set_entry(x, n, 4, 0, 9.50);
-   //set_entry(x, n, 4, 1, 9.60);
-   //set_entry(x, n, 4, 2, 8.70);
-   //set_entry(x, n, 4, 3, 2.40);
-
-
 
   /* Matrix des 1d-Modellproblems erzeugen */
   build_matrix1d(a,n);
@@ -320,6 +294,7 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
    int v, i, j;
    double *eye;
 
+   /* Identitaets-matrix zur akkumulierung von Q generieren */
    eye = (double*) malloc(m*m*sizeof(double));
    for (v = 0; v < m; v++)
    {
@@ -336,6 +311,7 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
       }
    }
 
+   /* Q (m x m) berechnen */
    for (v = 0; v < min_int(m, n); v++)
    {
       for (i = v + 1; i < m; i++)
@@ -366,6 +342,7 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
       }
    }
 
+   /* Q auf (k x m) bringen */
    for (j = 0; j < m; j++)
    {
       for (i = 0; i < k; i++)
@@ -374,8 +351,6 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
          set_entry(q_hat, k, i, j, alpha);
       }
    }
-
-   //print_matrix(q_hat, k, m);
    free(eye);
 }
 
@@ -392,18 +367,11 @@ void orthoit(double* a, int lda, int n, double* x, int k, double eps){
   qr_decomp(x, n, k, n);
   get_q(x, n, n, k, q_hat, k);
 
-  //printf("\nQ:\n");
-  //print_matrix(q_hat, k, n);
-
   /* Y=AQ rechnen */
   m_mult(a, n, n, 0, q_hat, k, n, 1, y);
-  //printf("\ny:\n");
-  //print_matrix(y, n, k);
 
   /* Lambda=Q*Y rechnen */
   m_mult(q_hat, k, n, 0, y, n, k, 0, lambda);
-  //printf("\nLambda:\n");
-  //print_matrix(lambda, k, k);
 
   while (1)
   {
