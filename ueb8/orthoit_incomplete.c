@@ -58,10 +58,12 @@ int main(void){
   srand(t);
   
   /* Problemdimension festlegen */
-  n = 5;
+  n = 50;
   
   /* Anzahl der Startvektoren festlegen */
-  k = 3;
+  k = 4;
+
+
   
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
@@ -74,6 +76,30 @@ int main(void){
    for(i=0;i<n*k;i++)
      x[i] = (rand() % 90)/10.0 + 1.0;
   
+
+   //set_entry(x, n, 0, 0, 1.70);
+   //set_entry(x, n, 0, 1, 6.90);
+   //set_entry(x, n, 0, 2, 5.10);
+   //set_entry(x, n, 0, 3, 7.40);
+   //set_entry(x, n, 1, 0, 3.20);
+   //set_entry(x, n, 1, 1, 1.90);
+   //set_entry(x, n, 1, 2, 2.80);
+   //set_entry(x, n, 1, 3, 4.80);
+   //set_entry(x, n, 2, 0, 3.10);
+   //set_entry(x, n, 2, 1, 6.60);
+   //set_entry(x, n, 2, 2, 3.20);
+   //set_entry(x, n, 2, 3, 7.00);
+   //set_entry(x, n, 3, 0, 5.40);
+   //set_entry(x, n, 3, 1, 2.00);
+   //set_entry(x, n, 3, 2, 6.10);
+   //set_entry(x, n, 3, 3, 7.20);
+   //set_entry(x, n, 4, 0, 9.50);
+   //set_entry(x, n, 4, 1, 9.60);
+   //set_entry(x, n, 4, 2, 8.70);
+   //set_entry(x, n, 4, 3, 2.40);
+
+
+
   /* Matrix des 1d-Modellproblems erzeugen */
   build_matrix1d(a,n);
     
@@ -101,6 +127,18 @@ int main(void){
   fprintf(F,"\n");
   fclose(F);
   
+  /* Direktes plotten aus C in Windows falls gnuplot installiert */
+#if 1
+   FILE *pipe = _popen("pgnuplot -persist", "w");
+   if (pipe)
+   {
+      fprintf(pipe , "plot \"./solution.txt\" using 1:2 with lines\n");
+      fflush(pipe);
+   }
+   fclose(pipe);
+#endif
+
+
   /* Speicher freigeben */
   free(a);
   free(x);
@@ -276,35 +314,33 @@ double norm_frob(double* a, int ldim, int m, int n){
   return sqrt(tmp);
 }
 
-void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k){
-   double rho, c, s, alpha, beta;
-   int k, i, j;
+void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
+{
+   double rho, c, s, alpha;
+   int v, i, j;
    double *eye;
 
-   eye = (double*) malloc(m*n*sizeof(double));
-   for (k = 0; k < m; k++)
+   eye = (double*) malloc(m*m*sizeof(double));
+   for (v = 0; v < m; v++)
    {
-      for (i = 0; i < n; i++)
+      for (i = 0; i < m; i++)
       {
-         if (k==i)
+         if (v==i)
          {
-            set_entry(eye, ldim, k, i, 1.0);
+            set_entry(eye, ldim, v, i, 1.0);
          }
          else
          {
-            set_entry(eye, ldim, k, i, 0.0);
+            set_entry(eye, ldim, v, i, 0.0);
          }
       }
    }
-   
-   printf("\nE:\n");
-   print_matrix(eye, m, n);
 
-   for (k = 0; k < min_int(m, n); k++)
+   for (v = 0; v < min_int(m, n); v++)
    {
-      for (i = k + 1; i < m; i++)
+      for (i = v + 1; i < m; i++)
       {
-         rho = get_entry(qr, ldim, i, k);
+         rho = get_entry(qr, ldim, i, v);
          if (rho == 1)
          {
             c = 1;
@@ -321,51 +357,71 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k){
             s = sqrt(1 - c*c);
          }
 
-         for (j = 0; j < n; j++)
+         for (j = 0; j < m; j++)
          {
             alpha = get_entry(eye, ldim, i, j);
-            set_entry(eye, ldim, i, j, c*alpha - s*get_entry(eye, ldim, k, j));
-            set_entry(eye, ldim, k, j, s*alpha + c*get_entry(eye, ldim, k, j));
+            set_entry(eye, ldim, i, j, c*alpha - s*get_entry(eye, ldim, v, j));
+            set_entry(eye, ldim, v, j, s*alpha + c*get_entry(eye, ldim, v, j));
          }
       }
    }
-   
-   printf("\nQ:\n");
-   print_matrix(eye, m, n);
 
-   //copy eye to qhat
+   for (j = 0; j < m; j++)
+   {
+      for (i = 0; i < k; i++)
+      {
+         double alpha = get_entry(eye, ldim, i, j);
+         set_entry(q_hat, k, i, j, alpha);
+      }
+   }
+
+   //print_matrix(q_hat, k, m);
+   free(eye);
 }
 
 void orthoit(double* a, int lda, int n, double* x, int k, double eps){
   double *q_hat, *y, *lambda, *test;
+  double norm;
   
   q_hat  = (double*) malloc(n*k*sizeof(double));
   y      = (double*) malloc(n*k*sizeof(double));
   lambda = (double*) malloc(k*k*sizeof(double));
   test   = (double*) malloc(n*k*sizeof(double));  /* Matrix der Abbruchbedingung */
   
-
+  /* QR=X und Q* extrahieren */
   qr_decomp(x, n, k, n);
   get_q(x, n, n, k, q_hat, k);
-  print_matrix(q_hat, n, k);
 
-  m_mult(a, n, n, 0, q_hat, n, k, 0, y);
-  m_mult(q_hat, n, k, 1, y, n, k, 0, lambda);
+  //printf("\nQ:\n");
+  //print_matrix(q_hat, k, n);
+
+  /* Y=AQ rechnen */
+  m_mult(a, n, n, 0, q_hat, k, n, 1, y);
+  //printf("\ny:\n");
+  //print_matrix(y, n, k);
+
+  /* Lambda=Q*Y rechnen */
+  m_mult(q_hat, k, n, 0, y, n, k, 0, lambda);
+  //printf("\nLambda:\n");
+  //print_matrix(lambda, k, k);
 
   while (1)
   {
-     m_mult(q_hat, n, k, 0, lambda, k, k, 0, test);
+     /* Abbruchbedingung berechnen und checken */
+     m_mult(q_hat, k, n, 1, lambda, k, k, 0, test);
      m_sub(test, test, y, n, n, k);
-     if (norm_frob(test, n, n, n) < eps) break;
+     norm = norm_frob(test, n, n, k);
+     if (norm < eps) break;
      
+     /* QR=Y und Q* extrahieren */
      qr_decomp(y, n, k, n);
      get_q(y, n, n, k, q_hat, k);
 
-     m_mult(a, n, n, 0, q_hat, n, k, 0, y);
-     m_mult(q_hat, n, k, 1, y, n, k, 0, lambda);
+     m_mult(a, n, n, 0, q_hat, k, n, 1, y);
+     m_mult(q_hat, k, n, 0, y, n, k, 0, lambda);
   }
 
-  x = q_hat;
+  memcpy(x, q_hat, n*k*sizeof(double));
   
   free(q_hat);
   free(y);
