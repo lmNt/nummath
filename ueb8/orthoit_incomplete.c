@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include <stdafx.h>
+#include "stdafx.h"
 
 /* Eintrag (row,col) aus der Matrix a auslesen */
 double get_entry(double* a, int ldim, int row, int col);
@@ -41,6 +41,10 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k);
 /* Berechnet die Eigenvektoren zu den betragsgroessten k Eigenwerten mit Genauigkeit eps*/
 void orthoit(double* a, int lda, int n, double* x, int k, double eps);
 
+/* Berechnet A=A-B */
+double m_sub(double* res, double* b, int ldim, int m, int n);
+
+
 /*#######################################################################################################*/
 
 int main(void){
@@ -54,10 +58,10 @@ int main(void){
   srand(t);
   
   /* Problemdimension festlegen */
-  n = 50;
+  n = 5;
   
   /* Anzahl der Startvektoren festlegen */
-  k = 4;
+  k = 3;
   
   /* Genauigkeit der Vektoriteration festlegen */
   eps = 1e-10;
@@ -77,7 +81,7 @@ int main(void){
   orthoit(a,n,n,x,k,eps); 
   
   /* Loesung in Datei schreiben */
-  F = fopen("./solution.txt", "w");
+  fopen_s(&F,"./solution.txt", "w");
   h = 1.0/(n+1);
   fprintf(F,"%f ",0.0);
   for(j=0;j<k;j++)
@@ -148,7 +152,7 @@ void build_matrix1d(double* a, int n){
     for(j=0;j<n;j++){
       if(i==j)
         set_entry(a,n,i,j,2.0);
-      else if(fabs(i-j)==1)
+      else if(abs(i-j)==1) //!TODO FIX back to fabs()
         set_entry(a,n,i,j,-1.0);
       else
         set_entry(a,n,i,j,0.0);
@@ -246,12 +250,24 @@ void m_mult(double* a, int ma, int na, int transa, double* b, int mb, int nb, in
       set_entry(c,mc,i,j,value);
     }
   }
-  
 }
+
+void m_sub(double* res, double* a, double* b, int ldim, int n, int m)
+{
+   int i, j;
+   for (i = 0; i < n; i++)
+   {
+      for (j = 0; j < m; j++)
+      {
+         set_entry(res, ldim, i, j, get_entry(a, ldim, i, j) - get_entry(b, ldim, i, j));
+      }
+   }
+}
+
 
 double norm_frob(double* a, int ldim, int m, int n){
   int i, j;
-  double tmp;
+  double tmp = 0.0;
   for (i=0; i<m; i++) {
     for (j=0; j<n; j++) {
       tmp += pow(fabs(get_entry(a, ldim, i, j)), 2);
@@ -261,20 +277,95 @@ double norm_frob(double* a, int ldim, int m, int n){
 }
 
 void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k){
+   double rho, c, s, alpha, beta;
+   int k, i, j;
+   double *eye;
+
+   eye = (double*) malloc(m*n*sizeof(double));
+   for (k = 0; k < m; k++)
+   {
+      for (i = 0; i < n; i++)
+      {
+         if (k==i)
+         {
+            set_entry(eye, ldim, k, i, 1.0);
+         }
+         else
+         {
+            set_entry(eye, ldim, k, i, 0.0);
+         }
+      }
+   }
    
+   printf("\nE:\n");
+   print_matrix(eye, m, n);
+
+   for (k = 0; k < min_int(m, n); k++)
+   {
+      for (i = k + 1; i < m; i++)
+      {
+         rho = get_entry(qr, ldim, i, k);
+         if (rho == 1)
+         {
+            c = 1;
+            s = 0;
+         }
+         else if (fabs(rho)<1)
+         {
+            s = rho;
+            c = sqrt(1 - (s*s));
+         }
+         else
+         {
+            c = 1 / rho;
+            s = sqrt(1 - c*c);
+         }
+
+         for (j = 0; j < n; j++)
+         {
+            alpha = get_entry(eye, ldim, i, j);
+            set_entry(eye, ldim, i, j, c*alpha - s*get_entry(eye, ldim, k, j));
+            set_entry(eye, ldim, k, j, s*alpha + c*get_entry(eye, ldim, k, j));
+         }
+      }
+   }
+   
+   printf("\nQ:\n");
+   print_matrix(eye, m, n);
+
+   //copy eye to qhat
 }
 
 void orthoit(double* a, int lda, int n, double* x, int k, double eps){
   double *q_hat, *y, *lambda, *test;
   
-  q_hat = (double*) malloc(n*k*sizeof(double));
-  y = (double*) malloc(n*k*sizeof(double));
+  q_hat  = (double*) malloc(n*k*sizeof(double));
+  y      = (double*) malloc(n*k*sizeof(double));
   lambda = (double*) malloc(k*k*sizeof(double));
-  test = (double*) malloc(n*k*sizeof(double));  /* Matrix der Abbruchbedingung */
+  test   = (double*) malloc(n*k*sizeof(double));  /* Matrix der Abbruchbedingung */
   
-  /*########################*/
-  /*# Quelltext einfuegen! #*/
-  /*########################*/
+
+  qr_decomp(x, n, k, n);
+  get_q(x, n, n, k, q_hat, k);
+  print_matrix(q_hat, n, k);
+
+  m_mult(a, n, n, 0, q_hat, n, k, 0, y);
+  m_mult(q_hat, n, k, 1, y, n, k, 0, lambda);
+
+  while (1)
+  {
+     m_mult(q_hat, n, k, 0, lambda, k, k, 0, test);
+     m_sub(test, test, y, n, n, k);
+     if (norm_frob(test, n, n, n) < eps) break;
+     
+     qr_decomp(y, n, k, n);
+     get_q(y, n, n, k, q_hat, k);
+
+     m_mult(a, n, n, 0, q_hat, n, k, 0, y);
+     m_mult(q_hat, n, k, 1, y, n, k, 0, lambda);
+  }
+
+  x = q_hat;
   
   free(q_hat);
   free(y);
