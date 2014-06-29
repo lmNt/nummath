@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{graphics, multirow}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\parindent0cm
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{surfacecor}{Corollary 1}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+\renewcommand{\a}{\"{a}}
+\renewcommand{\o}{\"{o}}
+\renewcommand{\u}{\"{u}}
+\newcommand{\beequal}{\mathop{=}\limits^!}
+\newcommand{\equalstar}{\mathop{=}\limits^{(1)}}
+\newcommand{\equalsstar}{\mathop{=}\limits^{(2)}}
+\newcommand{\equalssstar}{\mathop{=}\limits^{(3)}}
+\newcommand{\rayx}{\Lambda_A(\mbb{x})}
+\newcommand{\rayv}{\Lambda_A(\mbb{v})}
+\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\reall}[2]{\mathbb{R}^{(#1 \times #2)}}
+
+\begin{document}
+
+\title{Numerische Mathematik f\u r Ingenieure (SS 14) - \"{U}bung 9}
+\author{Merikan Koyun \& Julian Andrej}
+\maketitle
+
+\section*{T16. Lagrange Polynome und Monome}
+\section*{T17. Interpolationsfehler}
+Die Funktion $f(x)=e^{-x^2}$ soll an \a quidistanten St\u tzstellen $x_i = ih, i=0,1,2...$ auf dem Intervall $[0,1]$ tabelliert werden. Es ist die Schrittweite $h$ gesucht, die bei linearer Interpolation einen Interpolationsfehler kleiner $10^{-6}$ erzeugt.\vspace{0.3cm}
+
+Das Interpolationspolynom bei linearer Interpolation ist gegeben durch:
+\begin{equation}
+p(x) = f(x_i) + (x-x_i) \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_i}
+\end{equation}
+
+F\u r den Fehler gilt:
+\begin{equation}
+e(x) = f(x)-p(x) = \frac{f''(\eta)}{2}(x-x_i)(x-x_{i+1})
+\end{equation}
+
+Zur Absch\a tzung des maximalen Fehlers bedienen wir uns der Maximumsnorm
+\begin{equation}
+\Vert g \Vert_{\infty, [a,b]} = \max\{|g(x)| \, : \, x\in [a,b]\}
+\end{equation}
+sodass gilt:
+\begin{equation}
+\Vert f(x)-p(x)\Vert_{\infty, [a,b]} \leq \frac{\Vert f''(\eta) \Vert_{\infty, [a,b]}}{2}\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [a,b]}
+\end{equation}
+
+Wir berechnen zun\a chst die Maximumsnorm von $\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [a,b]}$.
+\begin{align}
+\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [x_i,x_{i+1}]} &= \max_{[x_i,x_{i+1}]} |(x-x_i)(x-x_{i+1})| \\
+&= \frac{(x_{i+1}-x_i)^2}{4}\\
+&= \frac{(ih+h-ih)^2}{4} \\ 
+&= \frac{h^2}{4}
+\end{align}
+
+Es gilt weiterhin:
+\begin{equation}
+f''(x) = e^{-x^2}(4x^2-2)
+\end{equation}
+und
+\begin{equation}
+\max_{[0,1]} |e^{-x^2}(4x^2-2)| = 2
+\end{equation}
+
+Wir k\o nnen den Fehler nun absch\a tzen mit:
+\begin{equation}
+e(x) \leq \frac{2h^2}{8} = \frac{h^2}{4}
+\end{equation}
+
+Der Fehler soll kleiner als $10^{-6}$ sein, somit ergibt sich:
+\begin{equation}
+h \leq \sqrt{4\cdot 10^{-6}} = 0.002
+\end{equation}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
