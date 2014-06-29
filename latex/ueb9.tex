@@ -43,13 +43,30 @@
 \maketitle
 
 \section*{T16. Lagrange Polynome und Monome}
+
+Fall $k=0$:\\
+Es gilt:
+\begin{equation}
+L(x)=\sum_{i=0}^m l_i(x) = 1
+\end{equation}
+
+Wir w\a hlen ein Polynom
+\begin{equation}
+P(x) = L(x)-1 = \sum_{i=0}^m l_i(x) = \sum_{i=0}^m \prod_{j=0, j \neq i}^m \frac{x-x_j}{x_i-x_j}
+\end{equation} 
+Es l\a sst sich erkennen, dass
+\begin{equation}
+P(x_i)=0 \quad \forall i = 0,...,m
+\end{equation}
+Dieses Polynom ist demnach vom Grad $n$ und besitzt $n+1$ Nullstellen. Daraus folgt, dass $P(x)$ das Nullpolynom sein muss.
+
+Es folgt, dass $L(x)$ das konstante Polynom 1 und es folgt:
+\begin{equation}
+\sum_{i=0}^m l_i(x) = 1
+\end{equation}
+
 \section*{T17. Interpolationsfehler}
 Die Funktion $f(x)=e^{-x^2}$ soll an \a quidistanten St\u tzstellen $x_i = ih, i=0,1,2...$ auf dem Intervall $[0,1]$ tabelliert werden. Es ist die Schrittweite $h$ gesucht, die bei linearer Interpolation einen Interpolationsfehler kleiner $10^{-6}$ erzeugt.\vspace{0.3cm}
-
-Das Interpolationspolynom bei linearer Interpolation ist gegeben durch:
-\begin{equation}
-p(x) = f(x_i) + (x-x_i) \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_i}
-\end{equation}
 
 F\u r den Fehler gilt:
 \begin{equation}
