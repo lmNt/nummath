@@ -43,27 +43,31 @@
 \maketitle
 
 \section*{T16. Lagrange Polynome und Monome}
-
-Fall $k=0$:\\
-Es gilt:
+Wir betrachten zun\a chst den allgemeinen Fall:
 \begin{equation}
-L(x)=\sum_{i=0}^m l_i(x) = 1
+p(x) = \sum_{i=0}^m x_i^k l_i(x)
 \end{equation}
+Der Grad des Polynoms ist also h\o chstens $m$ und es gilt $p(x_s)=x_s^k$ f\u r $k=0,...,m$.
+Weiterhin hat das neue Polynom $q(x)=p(x)-x^k$ die $m+1$ Nullstellen $x_0, ..., x_m$.\\
 
-Wir w\a hlen ein Polynom
-\begin{equation}
-P(x) = L(x)-1 = \sum_{i=0}^m l_i(x) = \sum_{i=0}^m \prod_{j=0, j \neq i}^m \frac{x-x_j}{x_i-x_j}
-\end{equation} 
-Es l\a sst sich erkennen, dass
-\begin{equation}
-P(x_i)=0 \quad \forall i = 0,...,m
-\end{equation}
-Dieses Polynom ist demnach vom Grad $n$ und besitzt $n+1$ Nullstellen. Daraus folgt, dass $P(x)$ das Nullpolynom sein muss.
+$k=0$:\\
+Es gilt somit $q(x) = p(x) - x^0 = p(x) - 1$. $q(x)$ ist ein Polynom vom Grad $m$ mit $m+1$ Nullstellen $x_0, ..., x_m$ und ist daher das Nullpolynom, sodass $p(x)=x^0=1$ f\u r alle $x$. Dann gilt trivialerweise auch f\u r $p(0)=1$. \vspace{0.3cm}
 
-Es folgt, dass $L(x)$ das konstante Polynom 1 und es folgt:
+$k=1,...,n$:\\
+$q(x)=p(x)-x^k$ ist ebenfalls ein Polynom vom Grad $m$ und hat die $m+1$ Nullstellen $x_0, ..., x_m$. Es ist ebenfalls das Nullpolynom, sodass gilt $p(x)=x^k$ f\u r alle x, sodass $p(0)=0$ gilt. \vspace{0.3cm}
+
+$k=m+1$:\\
+$q(x)=p(x)-x^{m+1}$ ist ein Polynom vom Grad $m+1$ mit $m+1$ Nullstellen $x_0, ..., x_m$. Der Koeffizient $a_{m+1}=-1$ (Leitkoeffizient).
+Es gilt also $q(x) = p(x) - x^{m+1} = - \prod_{i=0}^m (x-x_i)$. Umgestellt ergibt sich
 \begin{equation}
-\sum_{i=0}^m l_i(x) = 1
+p(x)= \left(- \prod_{i=0}^m (x-x_i)\right) + x^{m+1}
 \end{equation}
+Es folgt:
+\begin{align}
+p(0) &= -\prod_{i=0}^m -x_i \\
+&= (-1)^m\prod_{i=0}^m x_i
+\end{align}
+
 
 \section*{T17. Interpolationsfehler}
 Die Funktion $f(x)=e^{-x^2}$ soll an \a quidistanten St\u tzstellen $x_i = ih, i=0,1,2...$ auf dem Intervall $[0,1]$ tabelliert werden. Es ist die Schrittweite $h$ gesucht, die bei linearer Interpolation einen Interpolationsfehler kleiner $10^{-6}$ erzeugt.\vspace{0.3cm}
@@ -82,7 +86,7 @@ sodass gilt:
 \Vert f(x)-p(x)\Vert_{\infty, [a,b]} \leq \frac{\Vert f''(\eta) \Vert_{\infty, [a,b]}}{2}\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [a,b]}
 \end{equation}
 
-Wir berechnen zun\a chst die Maximumsnorm von $\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [a,b]}$.
+Wir berechnen zun\a chst die Maximumsnorm von $\Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [x_i,x_{i+1}]}$.
 \begin{align}
 \Vert(x-x_i)(x-x_{i+1})\Vert_{\infty, [x_i,x_{i+1}]} &= \max_{[x_i,x_{i+1}]} |(x-x_i)(x-x_{i+1})| \\
 &= \frac{(x_{i+1}-x_i)^2}{4}\\
