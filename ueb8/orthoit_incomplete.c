@@ -73,7 +73,7 @@ int main(void){
   
   /* Zufaellige Startvektoren erzeugen und in Matrix x zusammenfassen*/
    for(i=0;i<n*k;i++)
-     x[i] = i+1;//(rand() % 90)/10.0 + 1.0;
+     x[i] = (rand() % 90)/10.0 + 1.0;
    
   /* Matrix des 1d-Modellproblems erzeugen */
   build_matrix1d(a,n);
@@ -319,7 +319,6 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
       for (i = m-1; i >= v+1; i--)
       {
          rho = get_entry(qr, ldim, i, v);
-	 //printf("%f\n", rho);
          if (rho == 1)
          {
             c = 1;
@@ -344,7 +343,6 @@ void get_q(double* qr, int ldim, int m, int n, double* q_hat, int k)
          }
       }
    }
-   //print_matrix(eye, m, m);
    /* Q auf (k x m) bringen */
    for (j = 0; j < m; j++)
    {
@@ -367,11 +365,8 @@ void orthoit(double* a, int lda, int n, double* x, int k, double eps){
   test   = (double*) malloc(n*k*sizeof(double));  /* Matrix der Abbruchbedingung */
   
   /* QR=X und Q extrahieren */
-  //print_matrix(x, n, k);
   qr_decomp(x, n, k, n);
-  //print_matrix(x, n, k);
   get_q(x, n, n, k, q_hat, k);
-  //print_matrix(q_hat, n, k);
 
   /* Y=AQ rechnen */
   m_mult(a, n, n, 0, q_hat, n, k, 0, y);
@@ -386,7 +381,6 @@ void orthoit(double* a, int lda, int n, double* x, int k, double eps){
      m_sub(test, test, y, n, n, k);
      norm = norm_frob(test, n, n, k);
      if (norm < eps) break;
-     printf("%f\n", norm);
      
      // QR=Y und Q extrahieren 
      qr_decomp(y, n, k, n);
@@ -396,7 +390,6 @@ void orthoit(double* a, int lda, int n, double* x, int k, double eps){
      m_mult(q_hat, n, k, 1, y, n, k, 0, lambda);
   }
 
-  print_matrix(q_hat, n, k); 
   memcpy(x, q_hat, n*k*sizeof(double));
 
   free(q_hat);

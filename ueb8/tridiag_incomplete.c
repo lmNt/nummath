@@ -157,7 +157,7 @@ void solve_lr_decomp_tridiag(double* ld, double* d, double* ud, int n, double* b
   /* Forward substitution */
   y[0] = b[0];
   for (i = 1; i < n; i++) {
-    y[i] = b[i-1] - ld[i-1]*y[i-1];
+    y[i] = b[i] - ld[i-1]*y[i-1];
   }
 
   /* Backward substitution */
